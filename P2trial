@@ -23,22 +23,16 @@ class Player2: #shooter only moves up and down on y coordinate
     def __init__(self,y):
         self.y = y
         
-    def show(self, colour):
+     def show(self, colour):
         global screen
-        pygame.draw.rect(screen, colour, pygame.Rect(WIDTH-(BORDER+WIDTH//240)-self.WIDTH, self.y-self.HEIGHT//2, self.WIDTH, self.HEIGHT))
-    
+        POSX = WIDTH-(BORDER+WIDTH//240)-self.WIDTH
+        POSY = self.y-self.HEIGHT//2
+        pygame.draw.rect(screen, colour, pygame.Rect(POSX, POSY, self.WIDTH, self.HEIGHT))
+        
     def update(self):
-        self.speedx = 0
-        keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_LEFT]:
-            self.speedx = -8
-        if keystate[pygame.K_RIGHT]:
-            self.speedx = 8
-        self.rect.x += self.speedx
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_DOWN]:
+            Player2.show.POSY += VELOCITY 
             
 player2 = Player2(HEIGHT//2)
 player2.show(pygame.Color("white"))
