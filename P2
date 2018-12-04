@@ -29,18 +29,23 @@ class Player2: #shooter only moves up and down on y coordinate
        global screen
        pygame.draw.rect(screen, colour, pygame.Rect(WIDTH-(BORDER+WIDTH//240)-self.WIDTH, self.y-self.HEIGHT//2, self.WIDTH, self.HEIGHT))
        
-   def update(self):
-       self.y += (self.moveDown - self.moveUp) + VELOCITY
+    def update(self):
+       keys = pygame.key.get_pressed()
+       if keys[pygame.K_DOWN]:
+          player2.moveDown = 1
+          self.y += (self.moveDown - self.moveUp) + VELOCITY
+       elif keys[pygame.K_UP]:
+           player2.moveUP = 1
+           self.y -= (self.moveDown - self.moveUp) + VELOCITY
        #self.x = self.x + (self.moveR - self.moveL)+ VELOCITY
 
 pygame.init()
        
 player2 = Player2(0,HEIGHT//2) #player2 x y 
-player2.show(pygame.Color("white")) #show player2
 
 #framerate
-#FPS = 40
-#clock = pygame.time.Clock()
+FPS = 40
+clock = pygame.time.Clock()
 
 #mainloop
 
@@ -54,8 +59,10 @@ while True:
         player2.moveDown = 1
     #if keys[pygame.K_UP]:
      #player2.y -= VELOCITY
-    #clock.tick(FPS)
+    clock.tick(FPS)
     player2.update()
+    screen.fill(pygame.Color("black")) #don't put after any draw function
+    player2.show(pygame.Color("white")) #show player2
     pygame.display.flip()
 pygame.quit() #to be able to press exit
 os._exit(0) #MAC
