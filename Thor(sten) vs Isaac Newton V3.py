@@ -8,8 +8,6 @@ Created on Tue Dec  4 18:27:22 2018
 import pygame 
 from pygame.math import Vector2
 
-pygame.display.set_caption("Thor(sten) vs 'Isaac Newton'")
-
 HEIGHT = 650
 WIDTH = 1200
 BORDER = 10
