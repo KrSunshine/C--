@@ -40,7 +40,7 @@ class Player1:
        
    def show(self, colour):
        global screen
-       pygame.draw.rect(screen, colour, pygame.Rect((BORDER+WIDTH//240), self.y-self.HEIGHT//2, self.WIDTH, self.HEIGHT))
+       pygame.draw.rect(screen, colour, pygame.Rect(self.x, self.y-self.HEIGHT//2, self.WIDTH, self.HEIGHT))
        
    def update(self):
        keys = pygame.key.get_pressed()
@@ -133,7 +133,7 @@ velocity = (0,0) #bullet velocity at the beginning
 start = (HEIGHT / 2, WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2) #start at the same place as player2
 all_bullets = pygame.sprite.Group() 
 
-player1 = Player1(0,HEIGHT//2)
+player1 = Player1((BORDER+WIDTH//240),HEIGHT//2)
 player2 = Player2(0,HEIGHT//2)
 
 FPS = 40
