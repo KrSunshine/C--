@@ -122,9 +122,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.center = self.pos
         if self.rect.center[1]<=self.z or self.rect.center[1]>=HEIGHT - self.z: #Bouncing
             self.velocity = Vector2((self.velocity[0], -self.velocity[1]))
-
-
-            
+        if self.rect.center[0] <=0:
+            pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
 
 
 pygame.init()
