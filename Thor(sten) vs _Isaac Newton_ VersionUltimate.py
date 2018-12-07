@@ -1,31 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec  7 14:53:30 2018
-
-@author: User
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec  5 21:45:40 2018
-
-@author: UoN Loan Laptop
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Dec  4 19:33:44 2018
-@author: UoN Loan Laptop
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Dec  4 18:27:22 2018
-@author: User
-"""
-
 import pygame 
-#import math 
+import os
 from pygame.math import Vector2
 
 pygame.display.set_caption("Thor(sten) vs 'Isaac Newton'")
@@ -34,7 +8,9 @@ global HEIGHT
 HEIGHT = 650
 global WIDTH
 WIDTH = 1200
+global ENDZONE
 ENDZONE = 10
+global BORDER
 BORDER = 20
 VELOCITY = 14
 
@@ -92,9 +68,7 @@ class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordi
        self.image.fill((0, 255, 0))
        self.rect = self.image.get_rect()
        self.rect.center = (self.x, self.y)
-       print(self.x)
-       print(self.y)
-       
+          
    def update(self):
        keys = pygame.key.get_pressed()
        if keys[pygame.K_DOWN]:
@@ -131,10 +105,54 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.center[0] <=0:
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
 
+class Border1(pygame.sprite.Sprite):
+    def __init__(self): #x and y are positions
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.Surface((WIDTH, BORDER))
+       self.image.fill((255, 255, 0))
+       self.rect = self.image.get_rect()
+       self.rect.x = 0
+       self.rect.y = 0
+              
+class Border2(pygame.sprite.Sprite):
+    def __init__(self): #x and y are positions
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.Surface((WIDTH, BORDER))
+       self.image.fill((255, 255, 0))
+       self.rect = self.image.get_rect()
+       self.rect.x = 0
+       self.rect.y = HEIGHT-BORDER
+       
+class Endzone1(pygame.sprite.Sprite):
+    def __init__(self): #x and y are positions
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.Surface((ENDZONE, WIDTH-2*ENDZONE))
+       self.image.fill((0, 255, 0))
+       self.rect = self.image.get_rect()
+       self.rect.x = 0
+       self.rect.y = BORDER
 
-            
+class Endzone2(pygame.sprite.Sprite):
+    def __init__(self): #x and y are positions
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.Surface((ENDZONE, WIDTH-2*ENDZONE))
+       self.image.fill((0, 255, 0))
+       self.rect = self.image.get_rect()
+       self.rect.x = WIDTH-ENDZONE
+       self.rect.y = BORDER
 
+class Divider(pygame.sprite.Sprite):
 
+    WIDTH = 5
+    
+    def __init__(self): #x and y are positions
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.Surface((self.WIDTH, HEIGHT-(2*BORDER)))
+       self.image.fill((255, 255, 255))
+       self.rect = self.image.get_rect()
+       self.rect.x = WIDTH//2-self.WIDTH//2
+       self.rect.y = BORDER
+       
 pygame.init()
 pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
 
@@ -150,6 +168,19 @@ player1_group = pygame.sprite.Group()
 player1 = Player1(0,HEIGHT//2) #starting position of player 1
 player1_group.add(player1)
 
+boundary_group = pygame.sprite.Group()
+border1 = Border1()
+boundary_group.add(border1)
+border2 = Border2()
+boundary_group.add(border2)
+endzone1 = Endzone1()
+boundary_group.add(endzone1)
+endzone2 = Endzone2()
+boundary_group.add(endzone2)
+divider = Divider()
+boundary_group.add(divider)
+
+
 FPS = 40
 clock = pygame.time.Clock()
 
@@ -164,7 +195,8 @@ while True:
     all_bullets.update()
     player2_group.update()
     player1_group.update()
-    
+    boundary_group.update()
+     
     #calculate destination and velocity
     end_x = pygame.mouse.get_pos()[0]
     end_y = pygame.mouse.get_pos()[1]
@@ -173,25 +205,15 @@ while True:
     velocity = (start-end).normalize()*16
     
     # Draw / render
-    
-    
     clock.tick(FPS)
-    #player1.update()
-    #player2.update()
     
     screen.fill(pygame.Color("black")) #don't put after any draw function
     
     all_bullets.draw(screen)
     player2_group.draw(screen)
     player1_group.draw(screen)
-    
-    pygame.draw.rect(screen, pygame.Color("yellow"), pygame.Rect(0,0,WIDTH,BORDER))
-    pygame.draw.rect(screen, pygame.Color("red"), pygame.Rect(0,BORDER,ENDZONE,HEIGHT-(2*BORDER)))
-    pygame.draw.rect(screen, pygame.Color("yellow"), pygame.Rect(0, HEIGHT-BORDER, WIDTH, BORDER))
-    pygame.draw.rect(screen, pygame.Color("red"), pygame.Rect(WIDTH-ENDZONE, BORDER, ENDZONE, HEIGHT-(2*BORDER)))
-    pygame.draw.rect(screen, pygame.Color("white"), pygame.Rect(WIDTH//2,BORDER,2,HEIGHT-(2*BORDER)))
-    
-    #player1.show(pygame.Color("white"))
-   # player2.show(pygame.Color("white")) #show player2
+    boundary_group.draw(screen)
+     
     pygame.display.flip()
 pygame.quit() #to be able to press exit
+os._exit(0)
