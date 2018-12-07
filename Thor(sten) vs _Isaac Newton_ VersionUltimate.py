@@ -37,23 +37,23 @@ class Player1(pygame.sprite.Sprite):
        if keys[pygame.K_s]:
           self.y += VELOCITY
           self.rect.center = (self.rect.center[0], self.y)
-          if not (self.y <= (HEIGHT -self.HEIGHT//2 - BORDER)):
-              self.y = HEIGHT - self.HEIGHT//2 - BORDER
+          if self.y >= HEIGHT -self.HEIGHT - BORDER:
+              self.y = HEIGHT - self.HEIGHT - BORDER
        elif keys[pygame.K_w]:
            self.y -=VELOCITY
            self.rect.center = (self.rect.center[0], self.y)
-           if not (self.y >= self.HEIGHT//2 + BORDER):
-               self.y = self.HEIGHT//2 + BORDER
+           if self.y <= self.HEIGHT +BORDER:
+               self.y = self.HEIGHT + BORDER 
        elif keys[pygame.K_d]:
            self.x += VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if not (self.x <= (WIDTH//2)- self.WIDTH-2*ENDZONE):
-              self.x = (WIDTH//2 - self.WIDTH-2*ENDZONE)
+           if self.x >= WIDTH//2- self.WIDTH:
+              self.x = WIDTH//2- self.WIDTH
        elif keys[pygame.K_a]:
            self.x -=VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if not (self.x >= (WIDTH//500) ):
-              self.x = ((WIDTH//500))
+           if self.x <= 53:
+              self.x = 53
 
 class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordinate
 
@@ -165,7 +165,7 @@ player2 = Player2(WIDTH - 40, HEIGHT//2) #starting position of player 2
 player2_group.add(player2)
 
 player1_group = pygame.sprite.Group()
-player1 = Player1(0,HEIGHT//2) #starting position of player 1
+player1 = Player1(40,HEIGHT//2) #starting position of player 1
 player1_group.add(player1)
 
 boundary_group = pygame.sprite.Group()
