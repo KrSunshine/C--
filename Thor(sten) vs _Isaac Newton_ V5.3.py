@@ -162,7 +162,8 @@ while True:
     screen.fill(pygame.Color("black")) #don't put after any draw function
     
     all_bullets.draw(screen)
-    
+    all_sprites.draw(screen)
+
     pygame.draw.rect(screen, pygame.Color("yellow"), pygame.Rect(0,0,WIDTH,BORDER))
     pygame.draw.rect(screen, pygame.Color("red"), pygame.Rect(0,BORDER,ENDZONE,HEIGHT-(2*BORDER)))
     pygame.draw.rect(screen, pygame.Color("yellow"), pygame.Rect(0, HEIGHT-BORDER, WIDTH, BORDER))
