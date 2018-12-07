@@ -123,14 +123,14 @@ velocity = (0,0) #bullet velocity at the beginning
 #start = (HEIGHT / 2, WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2) #start at the same place as player2
 all_bullets = pygame.sprite.Group() 
 
-all_sprites = pygame.sprite.Group()
-player1 = Player1()
-all_sprites.add(player1)
-
 player2 = Player2(0,HEIGHT//2)
 
 FPS = 40
 clock = pygame.time.Clock()
+
+all_sprites = pygame.sprite.Group()
+player1 = Player1()
+all_sprites.add(player1)
 
 while True:
     e = pygame.event.poll()
