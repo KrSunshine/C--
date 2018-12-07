@@ -2,21 +2,20 @@ import pygame
 import os
 from pygame.math import Vector2
 
-pygame.display.set_caption("Thor(sten) vs 'Isaac Newton'")
-
 global HEIGHT
 HEIGHT = 650
 global WIDTH
 WIDTH = 1200
 global ENDZONE
-ENDZONE = 10
+ENDZONE = 15
 global BORDER
-BORDER = 20
-VELOCITY = 14
+BORDER = 30
+VELOCITY = 15
+LIVES = 3
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
-class Player1(pygame.sprite.Sprite):
+class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 dimensions
 
    WIDTH = 45
    HEIGHT = 60
@@ -37,13 +36,13 @@ class Player1(pygame.sprite.Sprite):
        if keys[pygame.K_s]:
           self.y += VELOCITY
           self.rect.center = (self.rect.center[0], self.y)
-          if self.y >= HEIGHT -self.HEIGHT - BORDER:
-              self.y = HEIGHT - self.HEIGHT - BORDER
+          if self.y >= HEIGHT -self.HEIGHT - BORDER + 12 :
+              self.y = HEIGHT - self.HEIGHT - BORDER + 12
        elif keys[pygame.K_w]:
            self.y -=VELOCITY
            self.rect.center = (self.rect.center[0], self.y)
-           if self.y <= self.HEIGHT +BORDER:
-               self.y = self.HEIGHT + BORDER 
+           if self.y <= self.HEIGHT + BORDER - 12:
+               self.y = self.HEIGHT + BORDER - 12
        elif keys[pygame.K_d]:
            self.x += VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
@@ -52,8 +51,8 @@ class Player1(pygame.sprite.Sprite):
        elif keys[pygame.K_a]:
            self.x -=VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if self.x <= 53:
-              self.x = 53
+           if self.x <= ENDZONE + self.WIDTH -5:
+              self.x = ENDZONE + self.WIDTH - 5
 
 class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordinate
 
@@ -74,13 +73,13 @@ class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordi
        if keys[pygame.K_DOWN]:
           self.y +=VELOCITY
           self.rect.center = (self.rect.center[0], self.y)
-          if self.y >= HEIGHT -self.HEIGHT//2 - BORDER:
-              self.y = HEIGHT - self.HEIGHT//2 - BORDER
+          if self.y >= HEIGHT -self.HEIGHT - BORDER + 12:
+              self.y = HEIGHT -self.HEIGHT - BORDER + 12
        elif keys[pygame.K_UP]:
            self.y -= VELOCITY
            self.rect.center = (self.rect.center[0], self.y)
-           if self.y <= self.HEIGHT//2 + BORDER:
-               self.y = self.HEIGHT//2 + BORDER            
+           if self.y <= self.HEIGHT + BORDER - 12:
+               self.y = self.HEIGHT + BORDER - 12            
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
@@ -106,8 +105,9 @@ class Bullet(pygame.sprite.Sprite):
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
         if self.rect.colliderect(player1.rect):
             pygame.sprite.Sprite.kill(self)
+        
 class Border1(pygame.sprite.Sprite):
-    def __init__(self): #x and y are positions
+    def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
        self.image = pygame.Surface((WIDTH, BORDER))
        self.image.fill((255, 255, 0))
@@ -116,7 +116,7 @@ class Border1(pygame.sprite.Sprite):
        self.rect.y = 0
               
 class Border2(pygame.sprite.Sprite):
-    def __init__(self): #x and y are positions
+    def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
        self.image = pygame.Surface((WIDTH, BORDER))
        self.image.fill((255, 255, 0))
@@ -125,7 +125,7 @@ class Border2(pygame.sprite.Sprite):
        self.rect.y = HEIGHT-BORDER
        
 class Endzone1(pygame.sprite.Sprite):
-    def __init__(self): #x and y are positions
+    def __init__(self):
        pygame.sprite.Sprite.__init__(self)
        self.image = pygame.Surface((ENDZONE, WIDTH-2*ENDZONE))
        self.image.fill((0, 255, 0))
@@ -134,7 +134,7 @@ class Endzone1(pygame.sprite.Sprite):
        self.rect.y = BORDER
 
 class Endzone2(pygame.sprite.Sprite):
-    def __init__(self): #x and y are positions
+    def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
        self.image = pygame.Surface((ENDZONE, WIDTH-2*ENDZONE))
        self.image.fill((0, 255, 0))
@@ -143,10 +143,8 @@ class Endzone2(pygame.sprite.Sprite):
        self.rect.y = BORDER
 
 class Divider(pygame.sprite.Sprite):
-
     WIDTH = 5
-    
-    def __init__(self): #x and y are positions
+    def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
        self.image = pygame.Surface((self.WIDTH, HEIGHT-(2*BORDER)))
        self.image.fill((255, 255, 255))
@@ -162,7 +160,7 @@ velocity = (0,0) #bullet velocity at the beginning
 all_bullets = pygame.sprite.Group() 
 
 player2_group = pygame.sprite.Group()
-player2 = Player2(WIDTH - 40, HEIGHT//2) #starting position of player 2
+player2 = Player2(WIDTH - 41, HEIGHT//2) #starting position of player 2
 player2_group.add(player2)
 
 player1_group = pygame.sprite.Group()
@@ -191,7 +189,6 @@ while True:
         break 
     elif e.type == pygame.MOUSEBUTTONDOWN :
         all_bullets.add(Bullet(velocity, start))
-
 
     all_bullets.update()
     player2_group.update()
