@@ -32,10 +32,6 @@ class Player1(pygame.sprite.Sprite):
        self.rect = self.image.get_rect()
        self.rect.x = ENDZONE + (WIDTH//240)
        self.rect.y = HEIGHT//2 - 2*BORDER
-       
-  ''' def show(self, colour):
-       global screen
-       pygame.draw.rect(screen, colour, pygame.Rect((self.x + ENDZONE + (WIDTH//240)), self.y-self.HEIGHT//2, self.WIDTH, self.HEIGHT))'''
    
    def keypress(self):
        keys = pygame.key.get_pressed()
@@ -172,7 +168,6 @@ while True:
     pygame.draw.rect(screen, pygame.Color("red"), pygame.Rect(WIDTH-ENDZONE, BORDER, ENDZONE, HEIGHT-(2*BORDER)))
     pygame.draw.rect(screen, pygame.Color("white"), pygame.Rect(WIDTH//2,BORDER,2,HEIGHT-(2*BORDER)))
     
-    player1.show(pygame.Color("white"))
     player2.show(pygame.Color("white")) #show player2
     pygame.display.flip()
 pygame.quit() #to be able to press exit
