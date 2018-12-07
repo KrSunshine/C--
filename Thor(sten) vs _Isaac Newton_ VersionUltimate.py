@@ -104,7 +104,8 @@ class Bullet(pygame.sprite.Sprite):
             self.velocity = Vector2((self.velocity[0], -self.velocity[1]))
         if self.rect.center[0] <=0:
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
-
+        if self.rect.colliderect(player1.rect):
+            pygame.sprite.Sprite.kill(self)
 class Border1(pygame.sprite.Sprite):
     def __init__(self): #x and y are positions
        pygame.sprite.Sprite.__init__(self)
