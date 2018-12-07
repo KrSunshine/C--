@@ -131,6 +131,8 @@ all_sprites = pygame.sprite.Group()
 player1 = Player1()
 all_sprites.add(player1)
 
+player2 = Player2(0,HEIGHT//2)
+
 FPS = 40
 clock = pygame.time.Clock()
 
