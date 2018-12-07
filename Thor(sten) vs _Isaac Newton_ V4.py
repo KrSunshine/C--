@@ -75,7 +75,7 @@ class Player2: #shooter only moves up and down on y coordinate
    def show(self, colour):
        global screen
        pygame.draw.rect(screen, colour, pygame.Rect(WIDTH-(BORDER+WIDTH//240)-self.WIDTH, self.y-self.HEIGHT//2, self.WIDTH, self.HEIGHT))
-       
+      #test,test
    def update(self):
        keys = pygame.key.get_pressed()
        if keys[pygame.K_DOWN]:
