@@ -112,15 +112,27 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.center[0] <=0:
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
 
+class Border(pygame.sprite.Sprite):
+   def __init__(self): 
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.Surface((WIDTH,BORDER))
+       self.image.fill(pygame.Color("Yellow"))
+       self.rect = self.image.get_rect()
+       self.rect.x = 0
 
-            
-
-
+class Endzone(pygame.sprite.Sprite):
+    def __init__(self): 
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.Surface(ENDZONE,(WIDTH-2*BORDER))
+       self.image.fill(pygame.Color("Red"))
+       self.rect = self.image.get_rect()
+       self.rect.y = BORDER
+           
 pygame.init()
 pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
 
 velocity = (0,0) #bullet velocity at the beginning
-#start = (HEIGHT / 2, WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2) #start at the same place as player2
+start = (HEIGHT / 2, WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2) #start at the same place as player2
 all_bullets = pygame.sprite.Group() 
 
 all_sprites = pygame.sprite.Group()
