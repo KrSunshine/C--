@@ -41,7 +41,7 @@ class Player1(pygame.sprite.Sprite):
               self.rect.y = HEIGHT - self.HEIGHT//2 - BORDER
        elif keys[pygame.K_w]:
            self.rect.y -= VELOCITY
-           if not (self.y >= 0 + self.HEIGHT//2 + BORDER):
+           if not (self.rect.y >= 0 + self.HEIGHT//2 + BORDER):
                self.rect.y = 0 + self.HEIGHT//2 + BORDER
        elif keys[pygame.K_d]:
            self.rect.x += VELOCITY
