@@ -105,6 +105,14 @@ class Bullet(pygame.sprite.Sprite):
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
         if self.rect.colliderect(player1.rect):
             pygame.sprite.Sprite.kill(self)
+
+    def aim(self):
+        end_x = pygame.mouse.get_pos()[0]
+        end_y = pygame.mouse.get_pos()[1]
+        end = Vector2((end_x, end_y))
+        self.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2, player2.y))
+        self.velocity = (self.start-end).normalize()*16
+        return self.velocity
         
 class Border1(pygame.sprite.Sprite):
     def __init__(self): 
@@ -155,8 +163,6 @@ class Divider(pygame.sprite.Sprite):
 pygame.init()
 pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
 
-velocity = (0,0) #bullet velocity at the beginning
-#start = (HEIGHT / 2, WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2) #start at the same place as player2
 all_bullets = pygame.sprite.Group() 
 
 player2_group = pygame.sprite.Group()
@@ -188,7 +194,7 @@ while True:
     if e.type == pygame.QUIT:
         break 
     elif e.type == pygame.MOUSEBUTTONDOWN :
-        all_bullets.add(Bullet(velocity, start))
+        all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
 
     all_bullets.update()
     player2_group.update()
@@ -196,12 +202,7 @@ while True:
     boundary_group.update()
      
     #calculate destination and velocity
-    end_x = pygame.mouse.get_pos()[0]
-    end_y = pygame.mouse.get_pos()[1]
-    end = Vector2((end_x, end_y))
-    start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2, player2.y))
-    velocity = (start-end).normalize()*16
-    
+    Bullet.aim(Bullet)    
     # Draw / render
     clock.tick(FPS)
     
