@@ -191,6 +191,8 @@ SHOT_DELAY = 500
 FPS = 40
 clock = pygame.time.Clock()
 #timerstart = pygame.time.get_ticks()
+pygame.time.set_timer(pygame.USEREVENT,1200) #still needs settings as probs depends on framerate
+counter = 30
 
 def Timeshow(text): 
     pygame.font.init()
@@ -205,6 +207,10 @@ while True:
     e = pygame.event.poll()
     if e.type == pygame.QUIT:
         break 
+    #if e.type == pygame.USEREVENT: 
+     #   counter -= 1
+      #  if counter == 0:
+       #     break
     elif e.type == pygame.MOUSEBUTTONDOWN :
         now = pygame.time.get_ticks()
         if now - last_shot >= SHOT_DELAY:
@@ -228,6 +234,7 @@ while True:
     player1_group.draw(screen)
     boundary_group.draw(screen)
     #Timeshow("Time: {}".format(seconds)) #show timer
+    Timeshow("Time: {}".format(counter))
      
     pygame.display.flip()
 pygame.quit() #to be able to press exit
