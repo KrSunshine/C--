@@ -185,6 +185,8 @@ boundary_group.add(endzone2)
 divider = Divider()
 boundary_group.add(divider)
 
+last_shot = 0
+SHOT_DELAY = 500
 
 FPS = 40
 clock = pygame.time.Clock()
@@ -194,7 +196,10 @@ while True:
     if e.type == pygame.QUIT:
         break 
     elif e.type == pygame.MOUSEBUTTONDOWN :
-        all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
+        now = pygame.time.get_ticks()
+        if now - last_shot >= SHOT_DELAY:
+            all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
+            last_shot = now
 
     all_bullets.update()
     player2_group.update()
