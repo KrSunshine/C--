@@ -190,8 +190,12 @@ SHOT_DELAY = 500
 
 FPS = 40
 clock = pygame.time.Clock()
+#timerstart = pygame.time.get_ticks()
 
 while True:
+    '''seconds=(pygame.time.get_ticks()-timerstart)/1000
+    if seconds > 30: #30sec timer right now game closes when timer runs out
+        break'''
     e = pygame.event.poll()
     if e.type == pygame.QUIT:
         break 
