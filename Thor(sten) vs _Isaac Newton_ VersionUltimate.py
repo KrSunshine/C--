@@ -192,6 +192,12 @@ FPS = 40
 clock = pygame.time.Clock()
 #timerstart = pygame.time.get_ticks()
 
+def Timeshow(text): 
+    pygame.font.init()
+    myFont = pygame.font.SysFont(pygame.font.get_default_font(),25) #default font size 25
+    surf = myFont.render(text, False, pygame.Color("Black"), pygame.Color("Yellow")) #font and background color
+    screen.blit(surf,((WIDTH//2)-50,0)) #where to put the text on
+
 while True:
     '''seconds=(pygame.time.get_ticks()-timerstart)/1000
     if seconds > 30: #30sec timer right now game closes when timer runs out
@@ -221,6 +227,7 @@ while True:
     player2_group.draw(screen)
     player1_group.draw(screen)
     boundary_group.draw(screen)
+    #Timeshow("Time: {}".format(seconds)) #show timer
      
     pygame.display.flip()
 pygame.quit() #to be able to press exit
