@@ -200,6 +200,12 @@ def Timeshow(text):
     surf = myFont.render(text, False, pygame.Color("Black"), pygame.Color("Yellow")) #font and background color
     screen.blit(surf,((WIDTH//2)-50,0)) #where to put the text on
 
+def Lifeshow(text):
+    pygame.font.init()
+    myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
+    surf =  myFont.render(text,False,pygame.Color("Black"), pygame.Color("Yellow"))
+    screen.blit(surf,(0,0))
+
 while True:
     '''seconds=(pygame.time.get_ticks()-timerstart)/1000
     if seconds > 30: #30sec timer right now game closes when timer runs out
@@ -211,6 +217,8 @@ while True:
      #   counter -= 1
       #  if counter == 0:
        #     break
+    #if LIVES < 1:
+     #   break
     elif e.type == pygame.MOUSEBUTTONDOWN :
         now = pygame.time.get_ticks()
         if now - last_shot >= SHOT_DELAY:
@@ -235,6 +243,7 @@ while True:
     boundary_group.draw(screen)
     #Timeshow("Time: {}".format(seconds)) #show timer
     Timeshow("Time: {}".format(counter))
+    Lifeshow("Lives: {}".format(LIVES))
      
     pygame.display.flip()
 pygame.quit() #to be able to press exit
