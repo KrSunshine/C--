@@ -105,6 +105,8 @@ class Bullet(pygame.sprite.Sprite):
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
         if self.rect.colliderect(player1.rect):
             pygame.sprite.Sprite.kill(self)
+            global LIVES
+            LIVES -=1
 
     def aim(self):
         end_x = pygame.mouse.get_pos()[0]
@@ -217,8 +219,8 @@ while True:
      #   counter -= 1
       #  if counter == 0:
        #     break
-    #if LIVES < 1:
-     #   break
+    if LIVES < 1:
+        break
     elif e.type == pygame.MOUSEBUTTONDOWN :
         now = pygame.time.get_ticks()
         if now - last_shot >= SHOT_DELAY:
