@@ -194,8 +194,8 @@ FPS = 40
 clock = pygame.time.Clock()
 #timerstart = pygame.time.get_ticks()
 pygame.time.set_timer(pygame.USEREVENT,1200) #still needs settings as probs depends on framerate
-counter = 30
-
+counter = 30-(pygame.time.get_ticks()//1000)
+print(clock)
 def Timeshow(text): 
     pygame.font.init()
     myFont = pygame.font.SysFont(pygame.font.get_default_font(),25) #default font size 25
@@ -209,16 +209,12 @@ def Lifeshow(text):
     screen.blit(surf,(0,0))
 
 while True:
-    '''seconds=(pygame.time.get_ticks()-timerstart)/1000
-    if seconds > 30: #30sec timer right now game closes when timer runs out
-        break'''
     e = pygame.event.poll()
     if e.type == pygame.QUIT:
         break 
-    #if e.type == pygame.USEREVENT: 
-     #   counter -= 1
-      #  if counter == 0:
-       #     break
+    time_left = counter-(pygame.time.get_ticks()//1000)
+    if time_left <= 0:
+        break
     if LIVES < 1:
         break
     elif e.type == pygame.MOUSEBUTTONDOWN :
@@ -231,7 +227,6 @@ while True:
     player2_group.update()
     player1_group.update()
     boundary_group.update()
-     
     #calculate destination and velocity
     Bullet.aim(Bullet)    
     # Draw / render
@@ -244,7 +239,7 @@ while True:
     player1_group.draw(screen)
     boundary_group.draw(screen)
     #Timeshow("Time: {}".format(seconds)) #show timer
-    Timeshow("Time: {}".format(counter))
+    Timeshow("Time: {}".format(time_left))
     Lifeshow("Lives: {}".format(LIVES))
      
     pygame.display.flip()
