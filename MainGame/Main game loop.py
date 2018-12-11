@@ -19,7 +19,7 @@ img_folder = os.path.join(game_folder, 'TSArt')
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
-Background = pygame.image.load(os.path.join(img_folder, 'Background.png')).convert()
+Background = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
 Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))
 
 class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 dimensions
@@ -54,8 +54,8 @@ class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 di
        elif keys[pygame.K_d]:
            self.x += VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if self.x >= WIDTH- self.WIDTH :
-              self.x = WIDTH- self.WIDTH 
+           if self.x >= WIDTH//2 - self.WIDTH :
+              self.x = WIDTH//2 - self.WIDTH 
        elif keys[pygame.K_a]:
            self.x -=VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
@@ -96,7 +96,7 @@ class Bullet(pygame.sprite.Sprite):
         self.z = 32
         #self.image = pygame.Surface((self.z, self.z)) #Shape of bullet
         #self.image.fill((0, 0, 0))            #Bullet colour
-        self.image = pygame.image.load(os.path.join(img_folder, 'Apple.png')).convert()
+        self.image = pygame.image.load(os.path.join(img_folder, 'sprite_1.png')).convert()
         self.image = pygame.transform.scale(self.image, (self.z, self.z))
         self.image.set_colorkey(pygame.Color("White"))
         #pygame.draw.circle(self.image, (0,255,0), (int(self.z/2), int(self.z/2)), int(self.z/2))
@@ -119,8 +119,11 @@ class Bullet(pygame.sprite.Sprite):
 class Border1(pygame.sprite.Sprite):
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
-       self.image = pygame.Surface((WIDTH, BORDER))
-       self.image.fill((255, 255, 0))
+       #self.image = pygame.Surface((WIDTH, BORDER))
+       #self.image.fill((255, 255, 0))
+       self.image = pygame.image.load(os.path.join(img_folder, 'forcefield.png')).convert()
+       self.image = pygame.transform.scale(self.image, (WIDTH, BORDER))
+       self.image.set_colorkey(pygame.Color("Black"))
        self.rect = self.image.get_rect()
        self.rect.x = 0
        self.rect.y = 0
@@ -140,8 +143,11 @@ class Border2(pygame.sprite.Sprite):
 class Endzone1(pygame.sprite.Sprite):
     def __init__(self):
        pygame.sprite.Sprite.__init__(self)
-       self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
-       self.image.fill((0, 255, 0))
+       #self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
+       #self.image.fill((0, 255, 0))
+       self.image = pygame.image.load(os.path.join(img_folder, 'forcefield.png')).convert()
+       self.image = pygame.transform.scale(self.image, (ENDZONE, HEIGHT-2*BORDER))
+       self.image.set_colorkey(pygame.Color("Black"))
        self.rect = self.image.get_rect()
        self.rect.x = 0
        self.rect.y = BORDER
@@ -159,8 +165,11 @@ class Endzone2(pygame.sprite.Sprite):
     WIDTH = 5
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
-       self.image = pygame.Surface((self.WIDTH, HEIGHT-(2*BORDER)))
-       self.image.fill((255, 255, 255))
+       #self.image = pygame.Surface((self.WIDTH, HEIGHT-(2*BORDER)))
+       #self.image.fill((255, 255, 255))
+       self.image = pygame.image.load(os.path.join(img_folder, 'forcefield.png')).convert()
+       self.image = pygame.transform.scale(self.image, (self.WIDTH, HEIGHT-2*BORDER))
+       self.image.set_colorkey(pygame.Color("Black"))
        self.rect = self.image.get_rect()
        self.rect.x = WIDTH//2-self.WIDTH//2
        self.rect.y = BORDER'''
