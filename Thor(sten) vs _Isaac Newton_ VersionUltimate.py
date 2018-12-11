@@ -108,13 +108,13 @@ class Bullet(pygame.sprite.Sprite):
             global LIVES
             LIVES -=1
 
-    def aim(self):
-        end_x = pygame.mouse.get_pos()[0]
-        end_y = pygame.mouse.get_pos()[1]
-        end = Vector2((end_x, end_y))
-        self.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2, player2.y))
-        self.velocity = (self.start-end).normalize()*16
-        return self.velocity
+def aim():
+    end_x = pygame.mouse.get_pos()[0]
+    end_y = pygame.mouse.get_pos()[1]
+    end = Vector2((end_x, end_y))
+    Bullet.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2, player2.y))
+    Bullet.velocity = (Bullet.start-end).normalize()*16
+    #return Bullet.velocity
         
 class Border1(pygame.sprite.Sprite):
     def __init__(self): 
@@ -228,7 +228,7 @@ while True:
     player1_group.update()
     boundary_group.update()
     #calculate destination and velocity
-    Bullet.aim(Bullet)    
+    aim()    
     # Draw / render
     clock.tick(FPS)
     
