@@ -13,6 +13,9 @@ BORDER = 30
 VELOCITY = 15
 LIVES = 30
 
+pygame.mixer.pre_init(44100, 16, 2, 4096)
+pygame.init()
+
 #import images
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'TSArt')
@@ -21,6 +24,9 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 Background = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
 Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))            
+
+sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
+targethit = pygame.mixer.Sound("targethit.wav")
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
@@ -170,6 +176,7 @@ def main ():
     def collide():
         for bullet in all_bullets:
             if bullet.rect.colliderect(player1.rect):
+                targethit.play()
                 pygame.sprite.Sprite.kill(bullet)
                 global LIVES
                 LIVES -=1
@@ -197,11 +204,13 @@ def main ():
                 
         if LIVES < 1:
             break
-        if e.type == pygame.MOUSEBUTTONDOWN :
-            now = pygame.time.get_ticks()
-            if now - last_shot >= SHOT_DELAY:
-                all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
-                last_shot = now
+        if time_left > 0 :
+            if e.type == pygame.MOUSEBUTTONDOWN :
+                now = pygame.time.get_ticks()
+                if now - last_shot >= SHOT_DELAY:
+                    sfx_throw.play()
+                    all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
+                    last_shot = now
         collide()
         all_bullets.update()
         player2_group.update()
