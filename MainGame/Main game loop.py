@@ -11,7 +11,7 @@ ENDZONE = 15
 global BORDER
 BORDER = 30
 VELOCITY = 15
-LIVES = 3
+LIVES = 30
 
 #import images
 game_folder = os.path.dirname(__file__)
@@ -24,8 +24,8 @@ Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))
 
 class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 dimensions
 
-   WIDTH = 75
-   HEIGHT = 100
+   WIDTH = 60
+   HEIGHT = 80
     
    def __init__(self,x,y): #x and y are positions
        pygame.sprite.Sprite.__init__(self)
@@ -54,8 +54,8 @@ class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 di
        elif keys[pygame.K_d]:
            self.x += VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if self.x >= WIDTH//2 - self.WIDTH :
-              self.x = WIDTH//2 - self.WIDTH 
+           if self.x >= WIDTH - self.WIDTH - 65:
+              self.x = WIDTH - self.WIDTH - 65
        elif keys[pygame.K_a]:
            self.x -=VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
@@ -64,8 +64,8 @@ class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 di
 
 class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordinate
 
-   WIDTH = 75
-   HEIGHT = 100
+   WIDTH = 60
+   HEIGHT = 80
     
    def __init__(self,x,y): #x and y are positions
        pygame.sprite.Sprite.__init__(self)
@@ -121,9 +121,9 @@ class Border1(pygame.sprite.Sprite):
        pygame.sprite.Sprite.__init__(self)
        #self.image = pygame.Surface((WIDTH, BORDER))
        #self.image.fill((255, 255, 0))
-       self.image = pygame.image.load(os.path.join(img_folder, 'forcefield.png')).convert()
+       self.image = pygame.image.load(os.path.join(img_folder, 'applerow.png')).convert()
        self.image = pygame.transform.scale(self.image, (WIDTH, BORDER))
-       self.image.set_colorkey(pygame.Color("Black"))
+       self.image.set_colorkey(pygame.Color("White"))
        self.rect = self.image.get_rect()
        self.rect.x = 0
        self.rect.y = 0
@@ -145,9 +145,9 @@ class Endzone1(pygame.sprite.Sprite):
        pygame.sprite.Sprite.__init__(self)
        #self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
        #self.image.fill((0, 255, 0))
-       self.image = pygame.image.load(os.path.join(img_folder, 'forcefield.png')).convert()
+       self.image = pygame.image.load(os.path.join(img_folder, 'lightsaber.png')).convert()
        self.image = pygame.transform.scale(self.image, (ENDZONE, HEIGHT-2*BORDER))
-       self.image.set_colorkey(pygame.Color("Black"))
+       self.image.set_colorkey(pygame.Color("White"))
        self.rect = self.image.get_rect()
        self.rect.x = 0
        self.rect.y = BORDER
@@ -157,6 +157,7 @@ class Endzone2(pygame.sprite.Sprite):
        pygame.sprite.Sprite.__init__(self)
        self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
        self.image.fill((0, 255, 0))
+       self.image.set_colorkey(pygame.Color("Green"))
        self.rect = self.image.get_rect()
        self.rect.x = WIDTH-ENDZONE
        self.rect.y = BORDER
@@ -182,7 +183,7 @@ def main ():
     all_bullets = pygame.sprite.Group() 
     
     player2_group = pygame.sprite.Group()
-    player2 = Player2(WIDTH - 41, HEIGHT//2) #starting position of player 2
+    player2 = Player2(WIDTH - 60, HEIGHT//2) #starting position of player 2
     player2_group.add(player2)
     
     player1_group = pygame.sprite.Group()
@@ -202,11 +203,11 @@ def main ():
     #boundary_group.add(divider)
     
     last_shot = 0
-    SHOT_DELAY = 500
+    SHOT_DELAY = 350
     
     FPS = 40
     clock = pygame.time.Clock()
-    counter = 30-(pygame.time.get_ticks()//1000)
+    counter = 60-(pygame.time.get_ticks()//1000)
     print(clock)
     
     def Timeshow(text): 
