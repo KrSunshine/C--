@@ -1,10 +1,9 @@
 import pygame 
 import os
-from pygame.locals import *
 from pygame.math import Vector2
 
 global HEIGHT
-HEIGHT = 650
+HEIGHT = 675
 global WIDTH
 WIDTH = 1200
 global ENDZONE
@@ -19,6 +18,9 @@ game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'TSArt')
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
+
+Background = pygame.image.load(os.path.join(img_folder, 'Background.png')).convert()
+Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))
 
 class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 dimensions
 
@@ -52,13 +54,13 @@ class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 di
        elif keys[pygame.K_d]:
            self.x += VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if self.x >= WIDTH//2- self.WIDTH:
-              self.x = WIDTH//2- self.WIDTH
+           if self.x >= WIDTH- self.WIDTH :
+              self.x = WIDTH- self.WIDTH 
        elif keys[pygame.K_a]:
            self.x -=VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if self.x <= ENDZONE + self.WIDTH -5:
-              self.x = ENDZONE + self.WIDTH - 5
+           if self.x <= ENDZONE + self.WIDTH - 17:
+              self.x = ENDZONE + self.WIDTH - 17
 
 class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordinate
 
@@ -111,9 +113,6 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.center[0] <=0:
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
 
-       
-
-        
 class Border1(pygame.sprite.Sprite):
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
@@ -135,7 +134,7 @@ class Border2(pygame.sprite.Sprite):
 class Endzone1(pygame.sprite.Sprite):
     def __init__(self):
        pygame.sprite.Sprite.__init__(self)
-       self.image = pygame.Surface((ENDZONE, WIDTH-2*ENDZONE))
+       self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
        self.image.fill((0, 255, 0))
        self.rect = self.image.get_rect()
        self.rect.x = 0
@@ -144,13 +143,13 @@ class Endzone1(pygame.sprite.Sprite):
 class Endzone2(pygame.sprite.Sprite):
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
-       self.image = pygame.Surface((ENDZONE, WIDTH-2*ENDZONE))
+       self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
        self.image.fill((0, 255, 0))
        self.rect = self.image.get_rect()
        self.rect.x = WIDTH-ENDZONE
        self.rect.y = BORDER
 
-class Divider(pygame.sprite.Sprite):
+'''class Divider(pygame.sprite.Sprite):
     WIDTH = 5
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
@@ -158,7 +157,8 @@ class Divider(pygame.sprite.Sprite):
        self.image.fill((255, 255, 255))
        self.rect = self.image.get_rect()
        self.rect.x = WIDTH//2-self.WIDTH//2
-       self.rect.y = BORDER
+       self.rect.y = BORDER'''
+       
 def main ():
       
     pygame.init()
@@ -171,7 +171,7 @@ def main ():
     player2_group.add(player2)
     
     player1_group = pygame.sprite.Group()
-    player1 = Player1(40,HEIGHT//2) #starting position of player 1
+    player1 = Player1(150,HEIGHT//2) #starting position of player 1
     player1_group.add(player1)
     
     boundary_group = pygame.sprite.Group()
@@ -183,8 +183,8 @@ def main ():
     boundary_group.add(endzone1)
     endzone2 = Endzone2()
     boundary_group.add(endzone2)
-    divider = Divider()
-    boundary_group.add(divider)
+    #divider = Divider()
+    #boundary_group.add(divider)
     
     last_shot = 0
     SHOT_DELAY = 500
@@ -214,7 +214,7 @@ def main ():
         Bullet.velocity = (Bullet.start-end).normalize()*16
         #return Bullet.velocity
         
-    def colide():
+    def collide():
         for bullet in all_bullets:
             if bullet.rect.colliderect(player1.rect):
                 pygame.sprite.Sprite.kill(bullet)
@@ -234,7 +234,7 @@ def main ():
             if now - last_shot >= SHOT_DELAY:
                 all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
                 last_shot = now
-        colide()
+        collide()
         all_bullets.update()
         player2_group.update()
         player1_group.update()
@@ -244,7 +244,8 @@ def main ():
         # Draw / render
         clock.tick(FPS)
         
-        screen.fill(pygame.Color("black")) #don't put after any draw function
+        screen.fill([255, 255, 255])
+        screen.blit(Background, [0, 0])
         
         all_bullets.draw(screen)
         player2_group.draw(screen)
