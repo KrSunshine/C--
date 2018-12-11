@@ -172,21 +172,29 @@ def main ():
             if bullet.rect.colliderect(player1.rect):
                 pygame.sprite.Sprite.kill(bullet)
                 global LIVES
-                LIVES -=1 
+                LIVES -=1
     """def first_round():"""
     last_shot = 0
     SHOT_DELAY = 500
+    i=0
     while True:
         e = pygame.event.poll()
         if e.type == pygame.QUIT:
             break 
         time_left = counter-(pygame.time.get_ticks()//1000)
         if time_left <= 0:
-            pygame.sprite.Sprite.kill(player2)
-            pygame.sprite.Sprite.kill(player1)
-            assign_2()
-            counter+=5
-            continue
+            if i <1:
+                pygame.sprite.Sprite.kill(player2)
+                pygame.sprite.Sprite.kill(player1)
+                
+                if time_left <= -5:
+                    assign_2()
+                    counter+=10
+                    i+=1
+                    continue
+            else:
+                break 
+                
         if LIVES < 1:
             break
         if e.type == pygame.MOUSEBUTTONDOWN :
