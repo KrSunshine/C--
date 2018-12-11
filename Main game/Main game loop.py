@@ -14,19 +14,24 @@ BORDER = 30
 VELOCITY = 15
 LIVES = 3
 
+#import images
+game_folder = os.path.dirname(__file__)
+img_folder = os.path.join(game_folder, 'TSArt')
+
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 dimensions
 
-   WIDTH = 45
-   HEIGHT = 60
+   WIDTH = 60
+   HEIGHT = 75
     
    def __init__(self,x,y): #x and y are positions
        pygame.sprite.Sprite.__init__(self)
        self.x = x
        self.y = y
-       self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
-       self.image.fill((0, 255, 0))
+       self.image = pygame.image.load(os.path.join(img_folder, 'Thorstenflip.png')).convert()
+       self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+       self.image.set_colorkey(pygame.Color("White"))
        self.rect = self.image.get_rect()
        self.rect.center = (self.x, self.y)
        print(self.x)
@@ -57,15 +62,16 @@ class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 di
 
 class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordinate
 
-   WIDTH = 45
-   HEIGHT = 60
+   WIDTH = 60
+   HEIGHT = 75
     
    def __init__(self,x,y): #x and y are positions
        pygame.sprite.Sprite.__init__(self)
        self.x = x
        self.y = y
-       self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
-       self.image.fill((0, 255, 0))
+       self.image = pygame.image.load(os.path.join(img_folder, 'Isaac.png')).convert()
+       self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+       self.image.set_colorkey(pygame.Color("White"))
        self.rect = self.image.get_rect()
        self.rect.center = (self.x, self.y)
           
