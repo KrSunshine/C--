@@ -128,8 +128,11 @@ class Border1(pygame.sprite.Sprite):
 class Border2(pygame.sprite.Sprite):
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
-       self.image = pygame.Surface((WIDTH, BORDER))
-       self.image.fill((255, 255, 0))
+       #self.image = pygame.Surface((WIDTH, BORDER))
+       #self.image.fill((255, 255, 0))
+       self.image = pygame.image.load(os.path.join(img_folder, 'ground.png')).convert()
+       self.image = pygame.transform.scale(self.image, (WIDTH, BORDER))
+       self.image.set_colorkey(pygame.Color("Black"))
        self.rect = self.image.get_rect()
        self.rect.x = 0
        self.rect.y = HEIGHT-BORDER
