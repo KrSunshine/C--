@@ -110,18 +110,9 @@ class Bullet(pygame.sprite.Sprite):
             self.velocity = Vector2((self.velocity[0], -self.velocity[1]))
         if self.rect.center[0] <=0:
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
-        if self.rect.colliderect(player1.rect):
-            pygame.sprite.Sprite.kill(self)
-            global LIVES
-            LIVES -=1
 
-def aim():
-    end_x = pygame.mouse.get_pos()[0]
-    end_y = pygame.mouse.get_pos()[1]
-    end = Vector2((end_x, end_y))
-    Bullet.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2, player2.y))
-    Bullet.velocity = (Bullet.start-end).normalize()*16
-    #return Bullet.velocity
+       
+
         
 class Border1(pygame.sprite.Sprite):
     def __init__(self): 
@@ -168,87 +159,103 @@ class Divider(pygame.sprite.Sprite):
        self.rect = self.image.get_rect()
        self.rect.x = WIDTH//2-self.WIDTH//2
        self.rect.y = BORDER
-       
-pygame.init()
-pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
-
-all_bullets = pygame.sprite.Group() 
-
-player2_group = pygame.sprite.Group()
-player2 = Player2(WIDTH - 41, HEIGHT//2) #starting position of player 2
-player2_group.add(player2)
-
-player1_group = pygame.sprite.Group()
-player1 = Player1(40,HEIGHT//2) #starting position of player 1
-player1_group.add(player1)
-
-boundary_group = pygame.sprite.Group()
-border1 = Border1()
-boundary_group.add(border1)
-border2 = Border2()
-boundary_group.add(border2)
-endzone1 = Endzone1()
-boundary_group.add(endzone1)
-endzone2 = Endzone2()
-boundary_group.add(endzone2)
-divider = Divider()
-boundary_group.add(divider)
-
-last_shot = 0
-SHOT_DELAY = 500
-
-FPS = 40
-clock = pygame.time.Clock()
-#timerstart = pygame.time.get_ticks()
-pygame.time.set_timer(pygame.USEREVENT,1200) #still needs settings as probs depends on framerate
-counter = 30-(pygame.time.get_ticks()//1000)
-print(clock)
-def Timeshow(text): 
-    pygame.font.init()
-    myFont = pygame.font.SysFont(pygame.font.get_default_font(),25) #default font size 25
-    surf = myFont.render(text, False, pygame.Color("Black"), pygame.Color("Yellow")) #font and background color
-    screen.blit(surf,((WIDTH//2)-50,0)) #where to put the text on
-
-def Lifeshow(text):
-    pygame.font.init()
-    myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
-    surf =  myFont.render(text,False,pygame.Color("Black"), pygame.Color("Yellow"))
-    screen.blit(surf,(0,0))
-
-while True:
-    e = pygame.event.poll()
-    if e.type == pygame.QUIT:
-        break 
-    time_left = counter-(pygame.time.get_ticks()//1000)
-    if time_left <= 0:
-        break
-    if LIVES < 1:
-        break
-    elif e.type == pygame.MOUSEBUTTONDOWN :
-        now = pygame.time.get_ticks()
-        if now - last_shot >= SHOT_DELAY:
-            all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
-            last_shot = now
-
-    all_bullets.update()
-    player2_group.update()
-    player1_group.update()
-    boundary_group.update()
-    #calculate destination and velocity
-    aim()    
-    # Draw / render
-    clock.tick(FPS)
+def main ():
+      
+    pygame.init()
+    pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
     
-    screen.fill(pygame.Color("black")) #don't put after any draw function
+    all_bullets = pygame.sprite.Group() 
     
-    all_bullets.draw(screen)
-    player2_group.draw(screen)
-    player1_group.draw(screen)
-    boundary_group.draw(screen)
-    #Timeshow("Time: {}".format(seconds)) #show timer
-    Timeshow("Time: {}".format(time_left))
-    Lifeshow("Lives: {}".format(LIVES))
-     
-    pygame.display.flip()
-pygame.quit() #to be able to press exit
-os._exit(0)
+    player2_group = pygame.sprite.Group()
+    player2 = Player2(WIDTH - 41, HEIGHT//2) #starting position of player 2
+    player2_group.add(player2)
+    
+    player1_group = pygame.sprite.Group()
+    player1 = Player1(40,HEIGHT//2) #starting position of player 1
+    player1_group.add(player1)
+    
+    boundary_group = pygame.sprite.Group()
+    border1 = Border1()
+    boundary_group.add(border1)
+    border2 = Border2()
+    boundary_group.add(border2)
+    endzone1 = Endzone1()
+    boundary_group.add(endzone1)
+    endzone2 = Endzone2()
+    boundary_group.add(endzone2)
+    divider = Divider()
+    boundary_group.add(divider)
+    
+    last_shot = 0
+    SHOT_DELAY = 500
+    
+    FPS = 40
+    clock = pygame.time.Clock()
+    counter = 30-(pygame.time.get_ticks()//1000)
+    print(clock)
+    
+    def Timeshow(text): 
+        pygame.font.init()
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),25) #default font size 25
+        surf = myFont.render(text, False, pygame.Color("Black"), pygame.Color("Yellow")) #font and background color
+        screen.blit(surf,((WIDTH//2)-50,0)) #where to put the text on
+    
+    def Lifeshow(text):
+        pygame.font.init()
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
+        surf =  myFont.render(text,False,pygame.Color("Black"), pygame.Color("Yellow"))
+        screen.blit(surf,(0,0))
+    
+    def aim():
+        end_x = pygame.mouse.get_pos()[0]
+        end_y = pygame.mouse.get_pos()[1]
+        end = Vector2((end_x, end_y))
+        Bullet.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2, player2.y))
+        Bullet.velocity = (Bullet.start-end).normalize()*16
+        #return Bullet.velocity
+        
+    def colide():
+        for bullet in all_bullets:
+            if bullet.rect.colliderect(player1.rect):
+                pygame.sprite.Sprite.kill(bullet)
+                global LIVES
+                LIVES -=1 
+    while True:
+        e = pygame.event.poll()
+        if e.type == pygame.QUIT:
+            break 
+        time_left = counter-(pygame.time.get_ticks()//1000)
+        if time_left <= 0:
+            break
+        if LIVES < 1:
+            break
+        elif e.type == pygame.MOUSEBUTTONDOWN :
+            now = pygame.time.get_ticks()
+            if now - last_shot >= SHOT_DELAY:
+                all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
+                last_shot = now
+        colide()
+        all_bullets.update()
+        player2_group.update()
+        player1_group.update()
+        boundary_group.update()
+        #calculate destination and velocity
+        aim()    
+        # Draw / render
+        clock.tick(FPS)
+        
+        screen.fill(pygame.Color("black")) #don't put after any draw function
+        
+        all_bullets.draw(screen)
+        player2_group.draw(screen)
+        player1_group.draw(screen)
+        boundary_group.draw(screen)
+        #Timeshow("Time: {}".format(seconds)) #show timer
+        Timeshow("Time: {}".format(time_left))
+        Lifeshow("Lives: {}".format(LIVES))
+         
+        pygame.display.flip()
+if __name__ == '__main__':
+    main()
+    pygame.quit() #to be able to press exit
+    os._exit(0)
