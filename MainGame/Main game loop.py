@@ -175,11 +175,12 @@ def main ():
         
     def collide():
         for bullet in all_bullets:
-            if bullet.rect.colliderect(player1.rect):
-                targethit.play()
-                pygame.sprite.Sprite.kill(bullet)
-                global LIVES
-                LIVES -=1
+            if time_left > 0:
+                if bullet.rect.colliderect(player1.rect):
+                    targethit.play()
+                    pygame.sprite.Sprite.kill(bullet)
+                    global LIVES
+                    LIVES -=1
     """def first_round():"""
     last_shot = 0
     SHOT_DELAY = 500
