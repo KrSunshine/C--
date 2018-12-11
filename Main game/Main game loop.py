@@ -1,5 +1,6 @@
 import pygame 
 import os
+from pygame.locals import *
 from pygame.math import Vector2
 
 global HEIGHT
