@@ -24,8 +24,8 @@ Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))
 
 class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 dimensions
 
-   WIDTH = 60
-   HEIGHT = 75
+   WIDTH = 75
+   HEIGHT = 100
     
    def __init__(self,x,y): #x and y are positions
        pygame.sprite.Sprite.__init__(self)
@@ -64,8 +64,8 @@ class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 di
 
 class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordinate
 
-   WIDTH = 60
-   HEIGHT = 75
+   WIDTH = 75
+   HEIGHT = 100
     
    def __init__(self,x,y): #x and y are positions
        pygame.sprite.Sprite.__init__(self)
@@ -92,13 +92,16 @@ class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordi
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
-        self.z = 32
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((self.z, self.z)) #Shape of bullet
-        self.image.fill((0, 0, 0))            #Bullet colour
-        pygame.draw.circle(self.image, (0,255,0), (int(self.z/2), int(self.z/2)), int(self.z/2))
+        self.z = 32
+        #self.image = pygame.Surface((self.z, self.z)) #Shape of bullet
+        #self.image.fill((0, 0, 0))            #Bullet colour
+        self.image = pygame.image.load(os.path.join(img_folder, 'Apple.png')).convert()
+        self.image = pygame.transform.scale(self.image, (self.z, self.z))
+        self.image.set_colorkey(pygame.Color("White"))
+        #pygame.draw.circle(self.image, (0,255,0), (int(self.z/2), int(self.z/2)), int(self.z/2))
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH - 10, HEIGHT / 2) #Set position accrding to the center of the bullet
+        self.rect.center = (self.z, self.z) #Set position accrding to the center of the bullet
         
         #init values
         self.pos = pos 
