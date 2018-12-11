@@ -1,7 +1,7 @@
 import pygame 
 import os
 from pygame.math import Vector2
-
+import players
 global HEIGHT
 HEIGHT = 675
 global WIDTH
@@ -20,75 +20,7 @@ img_folder = os.path.join(game_folder, 'TSArt')
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 Background = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
-Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))
-
-class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 dimensions
-
-   WIDTH = 60
-   HEIGHT = 80
-    
-   def __init__(self,x,y): #x and y are positions
-       pygame.sprite.Sprite.__init__(self)
-       self.x = x
-       self.y = y
-       self.image = pygame.image.load(os.path.join(img_folder, 'Thorstenflip.png')).convert()
-       self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
-       self.image.set_colorkey(pygame.Color("White"))
-       self.rect = self.image.get_rect()
-       self.rect.center = (self.x, self.y)
-       print(self.x)
-       print(self.y)
-              
-   def update(self):
-       keys = pygame.key.get_pressed()
-       if keys[pygame.K_s]:
-          self.y += VELOCITY
-          self.rect.center = (self.rect.center[0], self.y)
-          if self.y >= HEIGHT -self.HEIGHT - BORDER + 12 :
-              self.y = HEIGHT - self.HEIGHT - BORDER + 12
-       elif keys[pygame.K_w]:
-           self.y -=VELOCITY
-           self.rect.center = (self.rect.center[0], self.y)
-           if self.y <= self.HEIGHT + BORDER - 12:
-               self.y = self.HEIGHT + BORDER - 12
-       elif keys[pygame.K_d]:
-           self.x += VELOCITY
-           self.rect.center = (self.x, self.rect.center[1])
-           if self.x >= WIDTH - self.WIDTH - 65:
-              self.x = WIDTH - self.WIDTH - 65
-       elif keys[pygame.K_a]:
-           self.x -=VELOCITY
-           self.rect.center = (self.x, self.rect.center[1])
-           if self.x <= ENDZONE + self.WIDTH - 17:
-              self.x = ENDZONE + self.WIDTH - 17
-
-class Player2(pygame.sprite.Sprite): #shooter only moves up and down on y coordinate
-
-   WIDTH = 60
-   HEIGHT = 80
-    
-   def __init__(self,x,y): #x and y are positions
-       pygame.sprite.Sprite.__init__(self)
-       self.x = x
-       self.y = y
-       self.image = pygame.image.load(os.path.join(img_folder, 'Isaac.png')).convert()
-       self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
-       self.image.set_colorkey(pygame.Color("White"))
-       self.rect = self.image.get_rect()
-       self.rect.center = (self.x, self.y)
-          
-   def update(self):
-       keys = pygame.key.get_pressed()
-       if keys[pygame.K_DOWN]:
-          self.y +=VELOCITY
-          self.rect.center = (self.rect.center[0], self.y)
-          if self.y >= HEIGHT -self.HEIGHT - BORDER + 12:
-              self.y = HEIGHT -self.HEIGHT - BORDER + 12
-       elif keys[pygame.K_UP]:
-           self.y -= VELOCITY
-           self.rect.center = (self.rect.center[0], self.y)
-           if self.y <= self.HEIGHT + BORDER - 12:
-               self.y = self.HEIGHT + BORDER - 12            
+Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))            
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
@@ -183,12 +115,18 @@ def main ():
     all_bullets = pygame.sprite.Group() 
     
     player2_group = pygame.sprite.Group()
-    player2 = Player2(WIDTH - 60, HEIGHT//2) #starting position of player 2
+    player2 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Isaac.png')).convert()) #starting position of player 2
     player2_group.add(player2)
     
     player1_group = pygame.sprite.Group()
-    player1 = Player1(150,HEIGHT//2) #starting position of player 1
+    player1 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Thorstenflip.png')).convert()) #starting position of player 1
     player1_group.add(player1)
+    def assign_2(): 
+        player4 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Thorsten.png')).convert()) #starting position of player 2
+        player2_group.add(player4)
+        player3 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Isaacflip.png')).convert()) #starting position of player 1
+        player1_group.add(player3)
+    
     
     boundary_group = pygame.sprite.Group()
     border1 = Border1()
@@ -202,12 +140,11 @@ def main ():
     #divider = Divider()
     #boundary_group.add(divider)
     
-    last_shot = 0
-    SHOT_DELAY = 350
+    
     
     FPS = 40
     clock = pygame.time.Clock()
-    counter = 60-(pygame.time.get_ticks()//1000)
+    counter = 5-(pygame.time.get_ticks()//1000)
     print(clock)
     
     def Timeshow(text): 
@@ -226,7 +163,7 @@ def main ():
         end_x = pygame.mouse.get_pos()[0]
         end_y = pygame.mouse.get_pos()[1]
         end = Vector2((end_x, end_y))
-        Bullet.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - Player2.WIDTH//2, player2.y))
+        Bullet.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - players.Player2.WIDTH//2, player2.y))
         Bullet.velocity = (Bullet.start-end).normalize()*16
         #return Bullet.velocity
         
@@ -236,16 +173,23 @@ def main ():
                 pygame.sprite.Sprite.kill(bullet)
                 global LIVES
                 LIVES -=1 
+    """def first_round():"""
+    last_shot = 0
+    SHOT_DELAY = 500
     while True:
         e = pygame.event.poll()
         if e.type == pygame.QUIT:
             break 
         time_left = counter-(pygame.time.get_ticks()//1000)
         if time_left <= 0:
-            break
+            pygame.sprite.Sprite.kill(player2)
+            pygame.sprite.Sprite.kill(player1)
+            assign_2()
+            counter+=5
+            continue
         if LIVES < 1:
             break
-        elif e.type == pygame.MOUSEBUTTONDOWN :
+        if e.type == pygame.MOUSEBUTTONDOWN :
             now = pygame.time.get_ticks()
             if now - last_shot >= SHOT_DELAY:
                 all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
@@ -267,6 +211,8 @@ def main ():
         player2_group.draw(screen)
         player1_group.draw(screen)
         boundary_group.draw(screen)
+            
+            
         #Timeshow("Time: {}".format(seconds)) #show timer
         Timeshow("Time: {}".format(time_left))
         Lifeshow("Lives: {}".format(LIVES))
