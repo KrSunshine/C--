@@ -47,6 +47,9 @@ Background4 = pygame.image.load("TSArt/airadventurelevel4.png")
 #Background3 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
 #Background4 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel4.png')).convert()
 
+pygame.mixer.music.load("Deja Vu.mp3")
+pygame.mixer.music.play(-1)
+
 r = random.randint(1,4)
 
 def random(random):
@@ -64,8 +67,7 @@ Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))
     
 sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
 targethit = pygame.mixer.Sound("targethit.wav")
-blitz = pygame.mixer.music.load("Running in The 90s.mp3")
-pygame.mixer.music.play(-1)
+
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
@@ -142,10 +144,10 @@ def menu ():
     pygame.init()
     pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
     #random()
+    global intro
     intro = True
     
     while intro :
-        
         end_x = pygame.mouse.get_pos()[0]
         end_y = pygame.mouse.get_pos()[1]
         screen.fill((204,204,204)) 
@@ -160,6 +162,7 @@ def menu ():
         if (555 < end_x < 675) and (400 <= end_y <= 439):
             screen.blit(player_button2,(555,400))
             if pygame.mouse.get_pressed()[0]:
+                pygame.mixer.music.stop()
                 intro = False
                 
                 
@@ -212,6 +215,11 @@ def main():
     FPS = 40
     clock = pygame.time.Clock()
     
+    '''def music():
+        if intro == False:
+            pygame.mixer.music.load("Running in the 90s.mp3")
+            pygame.mixer.music.play(-1)'''
+                
     def Timeshow(text): 
         pygame.font.init()
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),40) #default font size 25
