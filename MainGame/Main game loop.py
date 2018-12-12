@@ -51,10 +51,10 @@ Background = random(r)
 
 Background = pygame.transform.scale(Background, (WIDTH,HEIGHT)) 
     
-sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
-targethit = pygame.mixer.Sound("targethit.wav")
-blitz = pygame.mixer.music.load("Running in The 90s.mp3")
-pygame.mixer.music.play(-1)
+#sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
+#targethit = pygame.mixer.Sound("targethit.wav")
+#blitz = pygame.mixer.music.load("Running in The 90s.mp3")
+#pygame.mixer.music.play(-1)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
@@ -176,6 +176,12 @@ def main ():
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),40)
         surf =  myFont.render(text,False,pygame.Color("White"))
         screen.blit(surf,(953,0))
+        
+    def VictoryText(text):
+        pygame.font.init()
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),100)
+        surf =  myFont.render(text,False,pygame.Color("Black"))
+        screen.blit(surf,(50,50))
     
     
     def aim():
@@ -188,13 +194,13 @@ def main ():
     def collide():
             for bullet in all_bullets:
                 if bullet.rect.colliderect(player1.rect):
-                    targethit.play()
+                    #targethit.play()
                     pygame.sprite.Sprite.kill(bullet)
                     if time_left>0:   
                         global IsaacScore
                         IsaacScore +=1
                 if bullet.rect.colliderect(player2.rect):
-                    targethit.play()
+                    #targethit.play()
                     pygame.sprite.Sprite.kill(bullet)
                     global ThorstenScore
                     ThorstenScore +=1
@@ -210,13 +216,15 @@ def main ():
                 IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
                 IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
                 screen.blit(IWin, [0, 0])
+                VictoryText("I had the highground Thor(sten)")
+                
             
         elif ThorstenScore > IsaacScore:
                 print("Thorsten wins!")
                 TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
                 TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
                 screen.blit(TWin, [0, 0])
-            
+                
         else: 
                 print("Draw!")
               
@@ -252,7 +260,7 @@ def main ():
             if e.type == pygame.MOUSEBUTTONDOWN :
                 now = pygame.time.get_ticks()
                 if now - last_shot >= SHOT_DELAY:
-                    sfx_throw.play()
+                    #sfx_throw.play()
                     all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
                     last_shot = now
         collide()
