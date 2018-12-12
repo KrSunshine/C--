@@ -137,7 +137,7 @@ class Endzone2(pygame.sprite.Sprite):
        self.rect.x = WIDTH-ENDZONE
        self.rect.y = BORDER'''
        
-def main ():
+def menu ():
       
     pygame.init()
     pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
@@ -180,10 +180,11 @@ def main ():
         pygame.display.update()     
         event = pygame.event.poll()
         
-        if event.type == QUIT:
+        if event.type == pygame.QUIT:
            pygame.quit()
            sys.exit()
            
+def main():
     all_bullets = pygame.sprite.Group() 
     
     player2_group = pygame.sprite.Group()
@@ -338,6 +339,7 @@ def main ():
             results()
         pygame.display.flip()
 if __name__ == '__main__':
+    menu()
     main()
     pygame.quit() #to be able to press exit
     os._exit(0)
