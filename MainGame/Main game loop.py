@@ -2,6 +2,7 @@ import pygame
 import os
 from pygame.math import Vector2
 import players
+import random
 global HEIGHT
 HEIGHT = 675
 global WIDTH
@@ -15,6 +16,7 @@ LIVES = 30
 LIVESX = 30
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
+pygame.mixer.init
 pygame.init()
 
 #import images
@@ -23,11 +25,31 @@ img_folder = os.path.join(game_folder, 'TSArt')
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
-Background = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
-Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))            
+Background1 = pygame.image.load("TSArt/airadventurelevel1.png")
+#Background1 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel1.png')).convert()
+Background2 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel2.png')).convert()
+Background3 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
+Background4 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel4.png')).convert()
 
+r = random.randint(1,4)
+
+def random(random):
+    if random == 1:
+        return Background1
+    elif random == 2:
+        return Background2
+    elif random == 3:
+        return Background3
+    elif random == 4:
+        return Background4
+Background = random(r)
+
+Background = pygame.transform.scale(Background, (WIDTH,HEIGHT)) 
+    
 sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
 targethit = pygame.mixer.Sound("targethit.wav")
+blitz = pygame.mixer.music.load("Blitz Kaskade.mp3")
+pygame.mixer.music.play(-1)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
@@ -105,6 +127,7 @@ def main ():
       
     pygame.init()
     pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
+    #random()
     
     all_bullets = pygame.sprite.Group() 
     
@@ -214,8 +237,8 @@ def main ():
         clock.tick(FPS)
         
         screen.fill([255, 255, 255])
-        screen.blit(Background, [0, 0])
-        
+        screen.blit(Background, [0, 0])        
+                 
         all_bullets.draw(screen)
         player2_group.draw(screen)
         player1_group.draw(screen)
