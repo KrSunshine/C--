@@ -1,8 +1,10 @@
 import pygame 
 import os
+import time
 from pygame.math import Vector2
 import players
 import random
+from Menu import *
 global HEIGHT
 HEIGHT = 675
 global WIDTH
@@ -156,8 +158,6 @@ def main ():
      
     FPS = 40
     clock = pygame.time.Clock()
-    counter = 5-(pygame.time.get_ticks()//1000)
-    print(clock)
     
     def Timeshow(text): 
         pygame.font.init()
@@ -199,8 +199,8 @@ def main ():
                     global ThorstenScore
                     ThorstenScore +=1
     round_time = 30
-    break_time = 6
-    counter = round_time-(pygame.time.get_ticks()//1000)
+    break_time = 5
+    t0 = time.time()
     last_shot = 0
     SHOT_DELAY = 500
     i=0                
@@ -209,23 +209,23 @@ def main ():
         e = pygame.event.poll()
         if e.type == pygame.QUIT:
             break 
-        time_left = counter-(pygame.time.get_ticks()//1000)
+        time_left = round_time - int(time.time()- t0)
         if time_left <= 0:
             if i <1:
                 pygame.sprite.Sprite.kill(player2)
-                pygame.sprite.Sprite.kill(player1)                
+                pygame.sprite.Sprite.kill(player1) 
                 if time_left <= -break_time:
-                   
+        
                     player1 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Thorsten.png')).convert()) #starting position of player 2
                     player2_group.add(player1)
                     player2 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Isaacflip.png')).convert()) #starting position of player 1
                     player1_group.add(player2)
-                    
-                    counter+=round_time+break_time
+                    round_time+=round_time+break_time
+                    print(time_left)
                     i+=1
                     continue
             else:
-                break 
+                break  
                 
         #if Thorstenlife < 1 or Isaaclife <1:
          #   break
@@ -260,6 +260,7 @@ def main ():
         Lifeshow2("Isaac's Energy : {}".format(IsaacScore))
         pygame.display.flip()
 if __name__ == '__main__':
+    menu()
     main()
     pygame.quit() #to be able to press exit
     os._exit(0)
