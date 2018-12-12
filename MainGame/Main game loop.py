@@ -254,19 +254,21 @@ def main():
         Bullet.start = Vector2((WIDTH - 100 - ENDZONE- ((BORDER+WIDTH)//240) - players.Player2.WIDTH//2, player2.y))
         Bullet.velocity = (Bullet.start-end).normalize()*(VELOCITY+2) #count one step of the bullet  
         
-    def collide(): #check if bullet hit a player
+    def collide(): #check if bullets hit the player
         for bullet in all_bullets:
-            if bullet.rect.colliderect(player1.rect): #in the first round player one is the runner
-                targethit.play()
+            if time_left <= 0:
                 pygame.sprite.Sprite.kill(bullet)
-                if time_left>0:   
-                    global IsaacScore
-                    IsaacScore +=1
-            if bullet.rect.colliderect(player2.rect):#in the second round player 2 is the runner
-                targethit.play()
-                pygame.sprite.Sprite.kill(bullet)
-                global ThorstenScore
-                ThorstenScore +=1
+            elif bullet.rect.colliderect(player1.rect):
+                 targethit.play()
+                 pygame.sprite.Sprite.kill(bullet)
+                 if time_left>0:   
+                     global IsaacScore
+                     IsaacScore +=1
+            elif bullet.rect.colliderect(player2.rect):
+                 targethit.play()
+                 pygame.sprite.Sprite.kill(bullet)
+                 global ThorstenScore
+                 ThorstenScore +=1
                  
     round_time = 5 #set the time of each round
     break_time = 2 #set the time between rounds
