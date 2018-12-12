@@ -53,7 +53,7 @@ Background = pygame.transform.scale(Background, (WIDTH,HEIGHT))
     
 sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
 targethit = pygame.mixer.Sound("targethit.wav")
-blitz = pygame.mixer.music.load("Blitz Kaskade.mp3")
+blitz = pygame.mixer.music.load("Running in The 90s.mp3")
 pygame.mixer.music.play(-1)
 
 class Bullet(pygame.sprite.Sprite):
@@ -87,9 +87,9 @@ class Border1(pygame.sprite.Sprite):
        pygame.sprite.Sprite.__init__(self)
        #self.image = pygame.Surface((WIDTH, BORDER))
        #self.image.fill((255, 255, 0))
-       self.image = pygame.image.load(os.path.join(img_folder, 'applerow.png')).convert()
+       self.image = pygame.image.load(os.path.join(img_folder, 'Topborder.png')).convert()
        self.image = pygame.transform.scale(self.image, (WIDTH, BORDER))
-       self.image.set_colorkey(pygame.Color("White"))
+       self.image.set_colorkey(pygame.Color("Grey"))
        self.rect = self.image.get_rect()
        self.rect.x = 0
        self.rect.y = 0
@@ -106,7 +106,7 @@ class Border2(pygame.sprite.Sprite):
        self.rect.x = 0
        self.rect.y = HEIGHT-BORDER
        
-class Endzone1(pygame.sprite.Sprite):
+'''class Endzone1(pygame.sprite.Sprite):
     def __init__(self):
        pygame.sprite.Sprite.__init__(self)
        #self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
@@ -126,7 +126,7 @@ class Endzone2(pygame.sprite.Sprite):
        self.image.set_colorkey(pygame.Color("Green"))
        self.rect = self.image.get_rect()
        self.rect.x = WIDTH-ENDZONE
-       self.rect.y = BORDER
+       self.rect.y = BORDER'''
        
 def main ():
       
@@ -149,33 +149,33 @@ def main ():
     boundary_group.add(border1)
     border2 = Border2()
     boundary_group.add(border2)
-    endzone1 = Endzone1()
+    '''endzone1 = Endzone1()
     boundary_group.add(endzone1)
     endzone2 = Endzone2()
     boundary_group.add(endzone2)
-    #divider = Divider()
-    #boundary_group.add(divider)
+    divider = Divider()
+    boundary_group.add(divider)'''
      
     FPS = 40
     clock = pygame.time.Clock()
     
     def Timeshow(text): 
         pygame.font.init()
-        myFont = pygame.font.SysFont(pygame.font.get_default_font(),25) #default font size 25
-        surf = myFont.render(text, False, pygame.Color("Black"), pygame.Color("Yellow")) #font and background color
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),40) #default font size 25
+        surf = myFont.render(text, False, pygame.Color("White")) #font and background color
         screen.blit(surf,((WIDTH//2)-50,0)) #where to put the text on
     
     def Lifeshow1(text):
         pygame.font.init()
-        myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
-        surf =  myFont.render(text,False,pygame.Color("Black"), pygame.Color("Yellow"))
-        screen.blit(surf,(0,0))
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),40)
+        surf =  myFont.render(text,False,pygame.Color("White"))
+        screen.blit(surf,(5,0))
         
     def Lifeshow2(text):
         pygame.font.init()
-        myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
-        surf =  myFont.render(text,False,pygame.Color("Black"), pygame.Color("Yellow"))
-        screen.blit(surf,(1057,0))
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),40)
+        surf =  myFont.render(text,False,pygame.Color("White"))
+        screen.blit(surf,(953,0))
     
     
     def aim():
