@@ -4,7 +4,8 @@ import time
 from pygame.math import Vector2
 import players
 import random
-from Menu import *
+import pygame, sys
+from pygame.locals import *
 global HEIGHT
 HEIGHT = 675
 global WIDTH
@@ -26,7 +27,15 @@ game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'TSArt')
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
-
+title = pygame.image.load("title.png")
+player_button = pygame.image.load("play.png")
+player_button2 = pygame.image.load("play2.png")
+help_button = pygame.image.load("help.png")
+help_button2 = pygame.image.load("help1.png")
+help_menu = pygame.image.load("help menu.png")
+background = pygame.image.load("background.png")
+click_sound = pygame.mixer.Sound("click.wav")
+click_sound.set_volume(0.5)
 Background1 = pygame.image.load("TSArt/airadventurelevel1.png")
 Background2 = pygame.image.load("TSArt/airadventurelevel2.png")
 Background3 = pygame.image.load("TSArt/airadventurelevel3.png")
@@ -133,7 +142,48 @@ def main ():
     pygame.init()
     pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
     #random()
+    intro = True
     
+    while intro :
+        
+        end_x = pygame.mouse.get_pos()[0]
+        end_y = pygame.mouse.get_pos()[1]
+        screen.fill((204,204,204)) 
+        screen.blit(background,(0,0))
+        screen.blit(title,(260,70))
+        screen.blit(help_button,(555,490))
+        screen.blit(player_button,(555,430))
+
+        
+        if (555 < end_x < 675) and (430 <= end_y <= 469):
+            screen.blit(player_button2,(555,430))
+            if pygame.mouse.get_pressed()[0]:
+                intro = False
+                
+                
+
+        
+        if (555 < end_x < 675) and (490 <= end_y <= 539):
+            screen.blit(help_button2,(555,490))
+
+            if pygame.mouse.get_pressed()[0]:
+#                click_sound.paly()
+                screen.blit(help_menu,(295,220))
+                pygame.time.delay(200)
+
+            else:
+                pass
+                  
+        
+        
+        pygame.display.flip()
+        pygame.display.update()     
+        event = pygame.event.poll()
+        
+        if event.type == QUIT:
+           pygame.quit()
+           sys.exit()
+           
     all_bullets = pygame.sprite.Group() 
     
     player2_group = pygame.sprite.Group()
@@ -220,11 +270,12 @@ def main ():
         else: 
                 print("Draw!")
               
-    
-    while True:
+    gameExit = False
+    while not gameExit:
         e = pygame.event.poll()
         if e.type == pygame.QUIT:
-            break 
+            pygame.quit()
+            sys.exit() 
         global time_left
         time_left = round_time - int(time.time()- t0)
         if time_left <= 0:
@@ -242,7 +293,7 @@ def main ():
                     round_time+=round_time+break_time
                     
                     i+=1
-                    continue
+                    False
             else:
                 i +=1  
                 
@@ -287,7 +338,6 @@ def main ():
             results()
         pygame.display.flip()
 if __name__ == '__main__':
-    menu()
     main()
     pygame.quit() #to be able to press exit
     os._exit(0)
