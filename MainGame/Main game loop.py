@@ -227,6 +227,12 @@ def main():
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),40)
         surf =  myFont.render(text,False,pygame.Color("White"))
         screen.blit(surf,(953,0))
+        
+    def VictoryText(text):
+        pygame.font.init()
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),100)
+        surf =  myFont.render(text,False,pygame.Color("Black"))
+        screen.blit(surf,(50,30))
     
     
     def aim():
@@ -237,18 +243,21 @@ def main():
         Bullet.velocity = (Bullet.start-end).normalize()*16   
         
     def collide():
-            for bullet in all_bullets:
-                if bullet.rect.colliderect(player1.rect):
-                    targethit.play()
-                    pygame.sprite.Sprite.kill(bullet)
-                    if time_left>0:   
-                        global IsaacScore
-                        IsaacScore +=1
-                if bullet.rect.colliderect(player2.rect):
-                    targethit.play()
-                    pygame.sprite.Sprite.kill(bullet)
-                    global ThorstenScore
-                    ThorstenScore +=1
+         for bullet in all_bullets:
+             if time_left <= 0:
+                 pygame.sprite.Sprite.kill(bullet)
+             elif bullet.rect.colliderect(player1.rect):
+                 targethit.play()
+                 pygame.sprite.Sprite.kill(bullet)
+                 if time_left>0:   
+                     global IsaacScore
+                     IsaacScore +=1
+             elif bullet.rect.colliderect(player2.rect):
+                 targethit.play()
+                 pygame.sprite.Sprite.kill(bullet)
+                 global ThorstenScore
+                 ThorstenScore +=1
+                 
     round_time = 5 
     break_time = 2
     t0 = time.time()
@@ -261,13 +270,14 @@ def main():
                 IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
                 IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
                 screen.blit(IWin, [0, 0])
-            
+                VictoryText("I had the highground, Thor(sten)!")
+                
         elif ThorstenScore > IsaacScore:
                 print("Thorsten wins!")
                 TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
                 TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
                 screen.blit(TWin, [0, 0])
-            
+                VictoryText("You never had a chance, Isaac!")
         else: 
                 print("Draw!")
               
