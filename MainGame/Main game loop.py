@@ -33,6 +33,8 @@ player_button2 = pygame.image.load("TSArt/play2.png")
 help_button = pygame.image.load("TSArt/help.png")
 help_button2 = pygame.image.load("TSArt/help1.png")
 help_menu = pygame.image.load("TSArt/help menu.png")
+left_menu = pygame.image.load("TSArt/left.png")
+right_menu = pygame.image.load("TSArt/right.png")
 background = pygame.image.load("TSArt/airadventurelevel1.png")
 click_sound = pygame.mixer.Sound("TSArt/click.wav")
 click_sound.set_volume(0.5)
@@ -151,24 +153,26 @@ def main ():
         screen.fill((204,204,204)) 
         screen.blit(background,(0,0))
         screen.blit(title,(260,70))
-        screen.blit(help_button,(555,490))
-        screen.blit(player_button,(555,430))
+        screen.blit(help_button,(555,460))
+        screen.blit(player_button,(555,400))
+        screen.blit(left_menu,(60,230))
+        screen.blit(right_menu,(930,230))
 
         
-        if (555 < end_x < 675) and (430 <= end_y <= 469):
-            screen.blit(player_button2,(555,430))
+        if (555 < end_x < 675) and (400 <= end_y <= 439):
+            screen.blit(player_button2,(555,400))
             if pygame.mouse.get_pressed()[0]:
                 intro = False
                 
                 
 
         
-        if (555 < end_x < 675) and (490 <= end_y <= 539):
-            screen.blit(help_button2,(555,490))
+        if (555 < end_x < 675) and (460 <= end_y <= 509):
+            screen.blit(help_button2,(555,460))
 
             if pygame.mouse.get_pressed()[0]:
 #                click_sound.paly()
-                screen.blit(help_menu,(295,220))
+                screen.blit(help_menu,(280,220))
                 pygame.time.delay(200)
 
             else:
