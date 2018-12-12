@@ -33,6 +33,8 @@ player_button2 = pygame.image.load("TSArt/play2.png")
 help_button = pygame.image.load("TSArt/help.png")
 help_button2 = pygame.image.load("TSArt/help1.png")
 help_menu = pygame.image.load("TSArt/help menu.png")
+left_menu = pygame.image.load("TSArt/left.png")
+right_menu = pygame.image.load("TSArt/right.png")
 background = pygame.image.load("TSArt/airadventurelevel1.png")
 click_sound = pygame.mixer.Sound("TSArt/click.wav")
 click_sound.set_volume(0.5)
@@ -149,24 +151,26 @@ def menu ():
         screen.fill((204,204,204)) 
         screen.blit(background,(0,0))
         screen.blit(title,(260,70))
-        screen.blit(help_button,(555,490))
-        screen.blit(player_button,(555,430))
+        screen.blit(help_button,(555,460))
+        screen.blit(player_button,(555,400))
+        screen.blit(left_menu,(60,230))
+        screen.blit(right_menu,(930,230))
 
         
-        if (555 < end_x < 675) and (430 <= end_y <= 469):
-            screen.blit(player_button2,(555,430))
+        if (555 < end_x < 675) and (400 <= end_y <= 439):
+            screen.blit(player_button2,(555,400))
             if pygame.mouse.get_pressed()[0]:
                 intro = False
                 
                 
 
         
-        if (555 < end_x < 675) and (490 <= end_y <= 539):
-            screen.blit(help_button2,(555,490))
+        if (555 < end_x < 675) and (460 <= end_y <= 509):
+            screen.blit(help_button2,(555,460))
 
             if pygame.mouse.get_pressed()[0]:
 #                click_sound.paly()
-                screen.blit(help_menu,(295,220))
+                screen.blit(help_menu,(280,220))
                 pygame.time.delay(200)
 
             else:
@@ -231,6 +235,16 @@ def main():
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),100)
         surf =  myFont.render(text,False,pygame.Color("Black"))
         screen.blit(surf,(50,30))
+        
+    def thorstenscore(text):
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),50)
+        surf =  myFont.render(text,False,pygame.Color("Black"))
+        screen.blit(surf,(50,350))
+    
+    def isaacscore(text):
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),50)
+        surf =  myFont.render(text,False,pygame.Color("Black"))
+        screen.blit(surf,(50,450))
     
     
     def aim(): #set the direction of the bullet
@@ -240,19 +254,21 @@ def main():
         Bullet.start = Vector2((WIDTH - 100 - ENDZONE- ((BORDER+WIDTH)//240) - players.Player2.WIDTH//2, player2.y))
         Bullet.velocity = (Bullet.start-end).normalize()*(VELOCITY+2) #count one step of the bullet  
         
-    def collide(): #check if bullet hit a player
+    def collide(): #check if bullets hit the player
         for bullet in all_bullets:
-            if bullet.rect.colliderect(player1.rect): #in the first round player one is the runner
-                targethit.play()
+            if time_left <= 0:
                 pygame.sprite.Sprite.kill(bullet)
-                if time_left>0:   
-                    global IsaacScore
-                    IsaacScore +=1
-            if bullet.rect.colliderect(player2.rect):#in the second round player 2 is the runner
-                targethit.play()
-                pygame.sprite.Sprite.kill(bullet)
-                global ThorstenScore
-                ThorstenScore +=1
+            elif bullet.rect.colliderect(player1.rect):
+                 targethit.play()
+                 pygame.sprite.Sprite.kill(bullet)
+                 if time_left>0:   
+                     global IsaacScore
+                     IsaacScore +=1
+            elif bullet.rect.colliderect(player2.rect):
+                 targethit.play()
+                 pygame.sprite.Sprite.kill(bullet)
+                 global ThorstenScore
+                 ThorstenScore +=1
                  
     round_time = 5 #set the time of each round
     break_time = 2 #set the time between rounds
@@ -267,6 +283,8 @@ def main():
                 IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
                 screen.blit(IWin, [0, 0])
                 VictoryText("I had the highground, Thor(sten)!")
+                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
+                isaacscore("Isaac's Energy : {}".format(IsaacScore))
                 
         elif ThorstenScore > IsaacScore:
                 print("Thorsten wins!")
@@ -274,6 +292,8 @@ def main():
                 TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
                 screen.blit(TWin, [0, 0])
                 VictoryText("You never had a chance, Isaac!")
+                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
+                isaacscore("Isaac's Energy : {}".format(IsaacScore))
         else: 
                 print("Draw!")
               
