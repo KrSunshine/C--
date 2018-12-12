@@ -43,8 +43,8 @@ class Player1(pygame.sprite.Sprite):#shooter moves across a defined area in 2 di
        elif keys[pygame.K_d]:
            self.x += VELOCITY
            self.rect.center = (self.x, self.rect.center[1])
-           if self.x >= WIDTH//2 - self.WIDTH :
-              self.x = WIDTH//2 - self.WIDTH 
+           if self.x >= WIDTH - self.WIDTH -200:
+              self.x = WIDTH - self.WIDTH -200
        elif keys[pygame.K_a]:
            self.x -=VELOCITY
            self.rect.center = (self.x, self.rect.center[1])

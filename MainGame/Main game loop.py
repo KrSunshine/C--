@@ -1,10 +1,9 @@
-import pygame 
+import pygame, sys 
 import os
 import time
 from pygame.math import Vector2
 import players
 import random
-import pygame, sys
 from pygame.locals import *
 global HEIGHT
 HEIGHT = 675
@@ -34,23 +33,15 @@ help_button2 = pygame.image.load("TSArt/help1.png")
 help_menu = pygame.image.load("TSArt/help menu.png")
 left_menu = pygame.image.load("TSArt/left.png")
 right_menu = pygame.image.load("TSArt/right.png")
-background = pygame.image.load("TSArt/airadventurelevel1.png")
-click_sound = pygame.mixer.Sound("TSArt/click.wav")
-click_sound.set_volume(0.5)
+#background = pygame.image.load("TSArt/airadventurelevel1.png")
 Background1 = pygame.image.load("TSArt/airadventurelevel1.png")
 Background2 = pygame.image.load("TSArt/airadventurelevel2.png")
 Background3 = pygame.image.load("TSArt/airadventurelevel3.png")
 Background4 = pygame.image.load("TSArt/airadventurelevel4.png")
-#Background1 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel1.png')).convert()
-#Background2 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel2.png')).convert()
-#Background3 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
-#Background4 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel4.png')).convert()
 
-pygame.mixer.music.load("Deja Vu.mp3")
-pygame.mixer.music.play(-1)
-
-r = random.randint(1,4)
-
+global r
+r = random.randint(1,4)  
+    
 def random(random):
     if random == 1:
         return Background1
@@ -60,13 +51,14 @@ def random(random):
         return Background3
     elif random == 4:
         return Background4
-Background = random(r)
+        
+BACKGROUND = random(r)
+BACKGROUND = pygame.transform.scale(BACKGROUND, (WIDTH,HEIGHT)) 
 
-Background = pygame.transform.scale(Background, (WIDTH,HEIGHT)) 
     
 sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
 targethit = pygame.mixer.Sound("targethit.wav")
-
+targethit.set_volume(3)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
@@ -116,33 +108,14 @@ class Border2(pygame.sprite.Sprite):
        self.rect.x = 0
        self.rect.y = HEIGHT-BORDER
        
-'''class Endzone1(pygame.sprite.Sprite):
-    def __init__(self):
-       pygame.sprite.Sprite.__init__(self)
-       #self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
-       #self.image.fill((0, 255, 0))
-       self.image = pygame.image.load(os.path.join(img_folder, 'lightsaber.png')).convert()
-       self.image = pygame.transform.scale(self.image, (ENDZONE, HEIGHT-2*BORDER))
-       self.image.set_colorkey(pygame.Color("White"))
-       self.rect = self.image.get_rect()
-       self.rect.x = 0
-       self.rect.y = BORDER
-
-class Endzone2(pygame.sprite.Sprite):
-    def __init__(self): 
-       pygame.sprite.Sprite.__init__(self)
-       self.image = pygame.Surface((ENDZONE, HEIGHT-2*BORDER))
-       self.image.fill((0, 255, 0))
-       self.image.set_colorkey(pygame.Color("Green"))
-       self.rect = self.image.get_rect()
-       self.rect.x = WIDTH-ENDZONE
-       self.rect.y = BORDER'''
-       
-def menu ():
-    global IsaacScore
-    IsaacScore = 0
-    global ThorstenScore
-    ThorstenScore = 0
+def menu ():#code for the menu screen
+    global ISAACSCORE
+    ISAACSCORE = 0
+    global THORSTENSCORE
+    THORSTENSCORE = 0
+        
+    pygame.mixer.music.load("Deja Vu.mp3")
+    pygame.mixer.music.play(-1)
       
     pygame.init()
     pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
@@ -154,36 +127,29 @@ def menu ():
         end_x = pygame.mouse.get_pos()[0]
         end_y = pygame.mouse.get_pos()[1]
         screen.fill((204,204,204)) 
-        screen.blit(background,(0,0))
+        screen.blit(BACKGROUND,(0,0))
         screen.blit(title,(260,70))
         screen.blit(help_button,(555,460))
         screen.blit(player_button,(555,400))
         screen.blit(left_menu,(60,230))
         screen.blit(right_menu,(930,230))
-
         
         if (555 < end_x < 675) and (400 <= end_y <= 439):
             screen.blit(player_button2,(555,400))
             if pygame.mouse.get_pressed()[0]:
                 pygame.mixer.music.stop()
-                intro = False
-                
-                
-
+                intro = False              
         
         if (555 < end_x < 675) and (460 <= end_y <= 509):
             screen.blit(help_button2,(555,460))
 
             if pygame.mouse.get_pressed()[0]:
-#                click_sound.paly()
                 screen.blit(help_menu,(280,220))
                 pygame.time.delay(200)
 
             else:
                 pass
                   
-        
-        
         pygame.display.flip()
         pygame.display.update()     
         event = pygame.event.poll()
@@ -192,8 +158,6 @@ def menu ():
            pygame.quit()
            sys.exit()
 
-
-       
 def main():
     pygame.mixer.music.load("Running in the 90s.mp3")
     pygame.mixer.music.play(-1)
@@ -212,40 +176,29 @@ def main():
     boundary_group.add(border1)
     border2 = Border2()
     boundary_group.add(border2)
-    '''endzone1 = Endzone1()
-    boundary_group.add(endzone1)
-    endzone2 = Endzone2()
-    boundary_group.add(endzone2)
-    divider = Divider()
-    boundary_group.add(divider)'''
      
     FPS = 40
     clock = pygame.time.Clock()
-    
-    '''def music():
-        if intro == False:
-            pygame.mixer.music.load("Running in the 90s.mp3")
-            pygame.mixer.music.play(-1)'''
-                
-    def Timeshow(text): 
+                    
+    def timeshow(text): 
         pygame.font.init()
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),40) #default font size 25
         surf = myFont.render(text, False, pygame.Color("White")) #font and background color
         screen.blit(surf,((WIDTH//2)-50,0)) #where to put the text on
     
-    def Lifeshow1(text):
+    def lifeshow1(text):
         pygame.font.init()
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),40)
         surf =  myFont.render(text,False,pygame.Color("White"))
         screen.blit(surf,(5,0))
         
-    def Lifeshow2(text):
+    def lifeshow2(text):
         pygame.font.init()
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),40)
         surf =  myFont.render(text,False,pygame.Color("White"))
         screen.blit(surf,(953,0))
         
-    def VictoryText(text):
+    def victorytext(text):
         pygame.font.init()
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),70)
         surf =  myFont.render(text,False,pygame.Color("Black"))
@@ -283,57 +236,48 @@ def main():
                  targethit.play()
                  pygame.sprite.Sprite.kill(bullet)
                  if time_left>0:   
-                     global IsaacScore
-                     IsaacScore +=1
+                     global ISAACSCORE
+                     ISAACSCORE +=1
             elif bullet.rect.colliderect(player2.rect):
                  targethit.play()
                  pygame.sprite.Sprite.kill(bullet)
-                 global ThorstenScore
-                 ThorstenScore +=1
+                 global THORSTENSCORE
+                 THORSTENSCORE +=1
                  
-    round_time = 5 #set the time of each round
-    break_time = 2 #set the time between rounds
+    round_time = 40 #set the time of each round
+    break_time = 5 #set the time between rounds
     t0 = time.time() #start measure time from the moment of leaving the menu
     last_shot = 0 #to set a fire rate
-    SHOT_DELAY = 500
+    SHOT_DELAY = 400
     i=0  #change rounds  
     def results(): #display victory images
-        if ThorstenScore < IsaacScore:
-                pygame.mixer.music.stop()
-                pygame.mixer.music.load("Victory.mp3")
-                pygame.mixer.music.play(-1)
-                print("Isaac wins!")
-                IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
-                IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
-                screen.blit(IWin, [0, 0])
-                VictoryText("Isaac WINS: I had the highground, Thor(sten)!")
-                GoBack("Press SPACE to go back to the main menu")
-                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
-                isaacscore("Isaac's Energy : {}".format(IsaacScore))
-                
-        elif ThorstenScore > IsaacScore:
-                pygame.mixer.music.stop()
-                pygame.mixer.music.load("Deja Vu.mp3")
-                pygame.mixer.music.play(-1)
-                print("Thorsten wins!")
-                TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
-                TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
-                screen.blit(TWin, [0, 0])
-                VictoryText("Thor WINS: You never had a chance, Isaac!")
-                GoBack("Press SPACE to go back to the main menu")
-                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
-                isaacscore("Isaac's Energy : {}".format(IsaacScore))
-        else: 
-                pygame.mixer.music.stop()
-                pygame.mixer.music.load("Draw.mp3")
-                pygame.mixer.music.play(-1)
-                Draw = pygame.image.load(os.path.join(img_folder, 'Draw.png')).convert()
-                Draw = pygame.transform.scale(Draw, (WIDTH, HEIGHT))
-                screen.blit(Draw, [0, 0])
-                VictoryText("DRAW: We were equally professional this time")
-                GoBack("Press SPACE to go back to the main menu")
-                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
-                isaacscore("Isaac's Energy : {}".format(IsaacScore))
+        if THORSTENSCORE < ISAACSCORE:
+            IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
+            IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
+            screen.blit(IWin, [0, 0])
+            victorytext("Isaac WINS: I had the highground, Thor(sten)!")
+            GoBack("Press SPACE to go back to the main menu")
+            thorstenscore("Thorsten's Power : {}".format(THORSTENSCORE))
+            isaacscore("Isaac's Energy : {}".format(ISAACSCORE))
+                       
+        elif THORSTENSCORE > ISAACSCORE:
+            TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
+            TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
+            screen.blit(TWin, [0, 0])
+            victorytext("Thor WINS: You never had a chance, Isaac!")
+            GoBack("Press SPACE to go back to the main menu")
+            thorstenscore("Thorsten's Power : {}".format(THORSTENSCORE))
+            isaacscore("Isaac's Energy : {}".format(ISAACSCORE))
+            return
+        else:             
+            Draw = pygame.image.load(os.path.join(img_folder, 'Draw.png')).convert()
+            Draw = pygame.transform.scale(Draw, (WIDTH, HEIGHT))
+            screen.blit(Draw, [0, 0])
+            victorytext("DRAW: We were equally professional this time")
+            GoBack("Press SPACE to go back to the main menu")
+            thorstenscore("Thorsten's Power : {}".format(THORSTENSCORE))
+            isaacscore("Isaac's Energy : {}".format(ISAACSCORE))
+            return
               
     gameExit = False
     while not gameExit:
@@ -366,8 +310,7 @@ def main():
                     gameExit = True
                     menu()
                     main()
-                    
-                
+                                    
         #if Thorstenlife < 1 or Isaaclife <1:
          #   break
         if time_left > 0 :
@@ -388,17 +331,17 @@ def main():
         clock.tick(FPS)
         
         screen.fill([255, 255, 255])
-        screen.blit(Background, [0, 0])        
+        screen.blit(BACKGROUND, [0, 0])        
                  
         all_bullets.draw(screen)
         player2_group.draw(screen)
         player1_group.draw(screen)
         boundary_group.draw(screen)
             
-        #Timeshow("Time: {}".format(seconds)) #show timer
-        Timeshow("Time: {}".format(time_left))
-        Lifeshow1("Thorsten's Power: {}".format(ThorstenScore))
-        Lifeshow2("Isaac's Energy : {}".format(IsaacScore))
+        #timeshow("Time: {}".format(seconds)) #show timer
+        timeshow("Time: {}".format(time_left))
+        lifeshow1("Thorsten's Power: {}".format(THORSTENSCORE))
+        lifeshow2("Isaac's Energy : {}".format(ISAACSCORE))
         if  i <1 and -break_time <= time_left <= 0:
             print(i)
             TTurn = pygame.image.load(os.path.join(img_folder, 'ThorstenTurn.png')).convert()
