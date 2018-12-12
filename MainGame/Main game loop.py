@@ -12,7 +12,6 @@ global BORDER
 BORDER = 30
 VELOCITY = 15
 LIVES = 30
-LIVESX = 30
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
@@ -100,6 +99,19 @@ class Endzone2(pygame.sprite.Sprite):
        self.rect = self.image.get_rect()
        self.rect.x = WIDTH-ENDZONE
        self.rect.y = BORDER
+
+'''class Divider(pygame.sprite.Sprite):
+    WIDTH = 5
+    def __init__(self): 
+       pygame.sprite.Sprite.__init__(self)
+       #self.image = pygame.Surface((self.WIDTH, HEIGHT-(2*BORDER)))
+       #self.image.fill((255, 255, 255))
+       self.image = pygame.image.load(os.path.join(img_folder, 'forcefield.png')).convert()
+       self.image = pygame.transform.scale(self.image, (self.WIDTH, HEIGHT-2*BORDER))
+       self.image.set_colorkey(pygame.Color("Black"))
+       self.rect = self.image.get_rect()
+       self.rect.x = WIDTH//2-self.WIDTH//2
+       self.rect.y = BORDER'''
        
 def main ():
       
@@ -115,6 +127,12 @@ def main ():
     player1_group = pygame.sprite.Group()
     player1 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Thorstenflip.png')).convert()) #starting position of player 1
     player1_group.add(player1)
+    def assign_2(): 
+        player4 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Thorsten.png')).convert()) #starting position of player 2
+        player2_group.add(player4)
+        player3 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Isaacflip.png')).convert()) #starting position of player 1
+        player1_group.add(player3)
+    
     
     boundary_group = pygame.sprite.Group()
     border1 = Border1()
@@ -127,7 +145,9 @@ def main ():
     boundary_group.add(endzone2)
     #divider = Divider()
     #boundary_group.add(divider)
-     
+    
+    
+    
     FPS = 40
     clock = pygame.time.Clock()
     counter = 5-(pygame.time.get_ticks()//1000)
@@ -149,29 +169,22 @@ def main ():
         end_x = pygame.mouse.get_pos()[0]
         end_y = pygame.mouse.get_pos()[1]
         end = Vector2((end_x, end_y))
-        Bullet.start = Vector2((WIDTH - 100 - ENDZONE- ((BORDER+WIDTH)//240) - players.Player2.WIDTH//2, player2.y))
-        Bullet.velocity = (Bullet.start-end).normalize()*16   
+        Bullet.start = Vector2((WIDTH - ENDZONE- ((BORDER+WIDTH)//240) - players.Player2.WIDTH//2, player2.y))
+        Bullet.velocity = (Bullet.start-end).normalize()*16
+        #return Bullet.velocity
         
     def collide():
-            for bullet in all_bullets:
+        for bullet in all_bullets:
+            if time_left > 0:
                 if bullet.rect.colliderect(player1.rect):
                     targethit.play()
                     pygame.sprite.Sprite.kill(bullet)
-                    if time_left>0:   
-                        global LIVES
-                        LIVES -=1
-                if bullet.rect.colliderect(player2.rect):
-                    targethit.play()
-                    pygame.sprite.Sprite.kill(bullet)
-                    global LIVESX
-                    LIVESX -=1
-    round_time = 30
-    break_time = 6
-    counter = round_time-(pygame.time.get_ticks()//1000)
+                    global LIVES
+                    LIVES -=1
+    """def first_round():"""
     last_shot = 0
     SHOT_DELAY = 500
-    i=0                
-    
+    i=0
     while True:
         e = pygame.event.poll()
         if e.type == pygame.QUIT:
@@ -180,15 +193,11 @@ def main ():
         if time_left <= 0:
             if i <1:
                 pygame.sprite.Sprite.kill(player2)
-                pygame.sprite.Sprite.kill(player1)                
-                if time_left <= -break_time:
-                   
-                    player1 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Thorsten.png')).convert()) #starting position of player 2
-                    player2_group.add(player1)
-                    player2 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Isaacflip.png')).convert()) #starting position of player 1
-                    player1_group.add(player2)
-                    
-                    counter+=round_time+break_time
+                pygame.sprite.Sprite.kill(player1)
+                
+                if time_left <= -5:
+                    assign_2()
+                    counter+=10
                     i+=1
                     continue
             else:
@@ -221,9 +230,10 @@ def main ():
         player1_group.draw(screen)
         boundary_group.draw(screen)
             
+            
         #Timeshow("Time: {}".format(seconds)) #show timer
         Timeshow("Time: {}".format(time_left))
-        Lifeshow("Lives: {}  LIVESX: {}".format(LIVES, LIVESX))
+        Lifeshow("Lives: {}".format(LIVES))
          
         pygame.display.flip()
 if __name__ == '__main__':
