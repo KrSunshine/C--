@@ -15,8 +15,7 @@ ENDZONE = 15
 global BORDER
 BORDER = 30
 VELOCITY = 15
-IsaacScore = 0
-ThorstenScore = 0
+
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.mixer.init
@@ -140,6 +139,10 @@ class Endzone2(pygame.sprite.Sprite):
        self.rect.y = BORDER'''
        
 def menu ():
+    global IsaacScore
+    IsaacScore = 0
+    global ThorstenScore
+    ThorstenScore = 0
       
     pygame.init()
     pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
@@ -297,6 +300,8 @@ def main():
     def results(): #display victory images
         if ThorstenScore < IsaacScore:
                 pygame.mixer.music.stop()
+                pygame.mixer.music.load("Victory.mp3")
+                pygame.mixer.music.play(-1)
                 print("Isaac wins!")
                 IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
                 IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
@@ -308,6 +313,8 @@ def main():
                 
         elif ThorstenScore > IsaacScore:
                 pygame.mixer.music.stop()
+                pygame.mixer.music.load("Deja Vu.mp3")
+                pygame.mixer.music.play(-1)
                 print("Thorsten wins!")
                 TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
                 TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
@@ -318,6 +325,8 @@ def main():
                 isaacscore("Isaac's Energy : {}".format(IsaacScore))
         else: 
                 pygame.mixer.music.stop()
+                pygame.mixer.music.load("Draw.mp3")
+                pygame.mixer.music.play(-1)
                 Draw = pygame.image.load(os.path.join(img_folder, 'Draw.png')).convert()
                 Draw = pygame.transform.scale(Draw, (WIDTH, HEIGHT))
                 screen.blit(Draw, [0, 0])
