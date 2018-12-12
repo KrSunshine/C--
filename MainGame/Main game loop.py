@@ -6,12 +6,12 @@ import players
 import random
 from pygame.locals import *
 global HEIGHT
-HEIGHT = 675
+HEIGHT = 675 #screen height
 global WIDTH
-WIDTH = 1200
+WIDTH = 1200 #screen width
 global ENDZONE
 ENDZONE = 15
-global BORDER
+global BORDER #Border on the top and bottom
 BORDER = 30
 VELOCITY = 15
 
@@ -34,7 +34,7 @@ help_menu = pygame.image.load("TSArt/help menu.png")
 left_menu = pygame.image.load("TSArt/left.png")
 right_menu = pygame.image.load("TSArt/right.png")
 #background = pygame.image.load("TSArt/airadventurelevel1.png")
-Background1 = pygame.image.load("TSArt/airadventurelevel1.png")
+Background1 = pygame.image.load("TSArt/airadventurelevel1.png") #4 background images come as random
 Background2 = pygame.image.load("TSArt/airadventurelevel2.png")
 Background3 = pygame.image.load("TSArt/airadventurelevel3.png")
 Background4 = pygame.image.load("TSArt/airadventurelevel4.png")
@@ -60,7 +60,7 @@ sfx_throw = pygame.mixer.Sound("sfx_throw2.wav")
 targethit = pygame.mixer.Sound("targethit.wav")
 targethit.set_volume(3)
 
-class Bullet(pygame.sprite.Sprite):
+class Bullet(pygame.sprite.Sprite): 
     def __init__(self, velocity, pos):
         pygame.sprite.Sprite.__init__(self)
         self.z = 32
@@ -84,11 +84,9 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.center[0] <=0:
             pygame.sprite.Sprite.kill(self) # if we don't kill them, they will return from the other side after a while
 
-class Border1(pygame.sprite.Sprite):
+class Border1(pygame.sprite.Sprite): 
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
-       #self.image = pygame.Surface((WIDTH, BORDER))
-       #self.image.fill((255, 255, 0))
        self.image = pygame.image.load(os.path.join(img_folder, 'Topborder.png')).convert()
        self.image = pygame.transform.scale(self.image, (WIDTH, BORDER))
        self.image.set_colorkey(pygame.Color("Grey"))
@@ -99,8 +97,6 @@ class Border1(pygame.sprite.Sprite):
 class Border2(pygame.sprite.Sprite):
     def __init__(self): 
        pygame.sprite.Sprite.__init__(self)
-       #self.image = pygame.Surface((WIDTH, BORDER))
-       #self.image.fill((255, 255, 0))
        self.image = pygame.image.load(os.path.join(img_folder, 'ground.png')).convert()
        self.image = pygame.transform.scale(self.image, (WIDTH, BORDER))
        self.image.set_colorkey(pygame.Color("Black"))
@@ -119,7 +115,6 @@ def menu ():#code for the menu screen
       
     pygame.init()
     pygame.display.set_caption("Thor(sten) vs Isaac Newton") #name of the window
-    #random()
     global intro
     intro = True
     
@@ -158,20 +153,20 @@ def menu ():#code for the menu screen
            pygame.quit()
            sys.exit()
 
-def main():
+def main(): #the main loop
     pygame.mixer.music.load("Running in the 90s.mp3")
     pygame.mixer.music.play(-1)
     all_bullets = pygame.sprite.Group()  #create a sprite group
     
-    player2_group = pygame.sprite.Group()
+    player2_group = pygame.sprite.Group() #right character
     player2 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Isaac.png')).convert()) #starting position of player 2
     player2_group.add(player2)
     
-    player1_group = pygame.sprite.Group()
+    player1_group = pygame.sprite.Group() #left character
     player1 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Thorstenflip.png')).convert()) #starting position of player 1
     player1_group.add(player1)
     
-    boundary_group = pygame.sprite.Group()
+    boundary_group = pygame.sprite.Group() #boundary contains borders
     border1 = Border1()
     boundary_group.add(border1)
     border2 = Border2()
@@ -180,7 +175,7 @@ def main():
     FPS = 40
     clock = pygame.time.Clock()
                     
-    def timeshow(text): 
+    def timeshow(text): #functions to show texts on the screen
         pygame.font.init()
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),40) #default font size 25
         surf = myFont.render(text, False, pygame.Color("White")) #font and background color
@@ -250,7 +245,7 @@ def main():
     last_shot = 0 #to set a fire rate
     SHOT_DELAY = 400
     i=0  #change rounds  
-    def results(): #display victory images
+    def results(): #display victory images depending on the scores
         if THORSTENSCORE < ISAACSCORE:
             IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
             IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
@@ -306,7 +301,7 @@ def main():
             else:
                 i +=1 
                 keys = pygame.key.get_pressed()
-                if keys[pygame.K_SPACE]:
+                if keys[pygame.K_SPACE]: #to go back to main menu after finishing a round
                     gameExit = True
                     menu()
                     main()
