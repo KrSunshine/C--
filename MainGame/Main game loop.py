@@ -198,22 +198,41 @@ def main ():
                     pygame.sprite.Sprite.kill(bullet)
                     global ThorstenScore
                     ThorstenScore +=1
-    round_time = 30
-    break_time = 5
+    round_time = 5 
+    break_time = 2
     t0 = time.time()
     last_shot = 0
     SHOT_DELAY = 500
-    i=0                
+    i=0  
+    def results(): #display victory images
+        if ThorstenScore < IsaacScore:
+                print("Isaac wins!")
+                IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
+                IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
+                screen.blit(IWin, [0, 0])
+            
+        elif ThorstenScore > IsaacScore:
+                print("Thorsten wins!")
+                TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
+                TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
+                screen.blit(TWin, [0, 0])
+            
+        else: 
+                print("Draw!")
+              
     
     while True:
         e = pygame.event.poll()
         if e.type == pygame.QUIT:
             break 
+        global time_left
         time_left = round_time - int(time.time()- t0)
         if time_left <= 0:
+            
             if i <1:
                 pygame.sprite.Sprite.kill(player2)
                 pygame.sprite.Sprite.kill(player1) 
+                
                 if time_left <= -break_time:
         
                     player1 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Thorsten.png')).convert()) #starting position of player 2
@@ -221,11 +240,11 @@ def main ():
                     player2 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Isaacflip.png')).convert()) #starting position of player 1
                     player1_group.add(player2)
                     round_time+=round_time+break_time
-                    print(time_left)
+                    
                     i+=1
                     continue
             else:
-                break  
+                i +=1  
                 
         #if Thorstenlife < 1 or Isaaclife <1:
          #   break
@@ -258,6 +277,14 @@ def main ():
         Timeshow("Time: {}".format(time_left))
         Lifeshow1("Thorsten's Power: {}".format(ThorstenScore))
         Lifeshow2("Isaac's Energy : {}".format(IsaacScore))
+        if  i <1 and -break_time <= time_left <= 0:
+            print(i)
+            TTurn = pygame.image.load(os.path.join(img_folder, 'ThorstenTurn.png')).convert()
+            TTurn = pygame.transform.scale(TTurn, (WIDTH, HEIGHT))
+            screen.blit(TTurn, [0, 0])
+            
+        if i >2:
+            results()
         pygame.display.flip()
 if __name__ == '__main__':
     menu()
