@@ -1,14 +1,11 @@
 import pygame 
 import os
-from pygame.math import Vector2
-
 
 HEIGHT = 675
 WIDTH = 1200
 ENDZONE = 15
 BORDER = 30
 VELOCITY = 15
-LIVES = 3
 
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'TSArt')

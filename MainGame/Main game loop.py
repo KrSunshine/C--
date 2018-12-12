@@ -11,8 +11,8 @@ ENDZONE = 15
 global BORDER
 BORDER = 30
 VELOCITY = 15
-LIVES = 30
-LIVESX = 30
+Thorstenlife = 30
+Isaaclife = 30
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
@@ -158,13 +158,13 @@ def main ():
                     targethit.play()
                     pygame.sprite.Sprite.kill(bullet)
                     if time_left>0:   
-                        global LIVES
-                        LIVES -=1
+                        global Thorstenlife
+                        Thorstenlife -=1
                 if bullet.rect.colliderect(player2.rect):
                     targethit.play()
                     pygame.sprite.Sprite.kill(bullet)
-                    global LIVESX
-                    LIVESX -=1
+                    global Isaaclife
+                    Isaaclife -=1
     round_time = 30
     break_time = 6
     counter = round_time-(pygame.time.get_ticks()//1000)
@@ -194,7 +194,7 @@ def main ():
             else:
                 break 
                 
-        if LIVES < 1:
+        if Thorstenlife < 1 or Isaaclife <1:
             break
         if time_left > 0 :
             if e.type == pygame.MOUSEBUTTONDOWN :
@@ -223,7 +223,7 @@ def main ():
             
         #Timeshow("Time: {}".format(seconds)) #show timer
         Timeshow("Time: {}".format(time_left))
-        Lifeshow("Lives: {}  LIVESX: {}".format(LIVES, LIVESX))
+        Lifeshow("Thorsten: {}  Isaac: {}".format(Thorstenlife, Isaaclife))
          
         pygame.display.flip()
 if __name__ == '__main__':
