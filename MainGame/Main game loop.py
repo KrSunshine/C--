@@ -69,13 +69,11 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, velocity, pos):
         pygame.sprite.Sprite.__init__(self)
         self.z = 32
-        #self.image = pygame.Surface((self.z, self.z)) #Shape of bullet
-        #self.image.fill((0, 0, 0))            #Bullet colour
         self.image = pygame.image.load(os.path.join(img_folder, 'sprite_1.png')).convert()
         self.image = pygame.transform.scale(self.image, (self.z, self.z))
         self.image.set_colorkey(pygame.Color("White"))
         #pygame.draw.circle(self.image, (0,255,0), (int(self.z/2), int(self.z/2)), int(self.z/2))
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect() #put object into a rectangle. Tt is needed to interact with other object
         self.rect.center = (self.z, self.z) #Set position accrding to the center of the bullet
         
         #init values
@@ -84,8 +82,8 @@ class Bullet(pygame.sprite.Sprite):
         
 
     def update(self):
-        self.pos -= self.velocity
-        self.rect.center = self.pos
+        self.pos -= self.velocity #Velocity tells where bullet go. It is set in the "aim" function
+        self.rect.center = self.pos #move the bullet according to the velocity
         if self.rect.center[1]<=self.z or self.rect.center[1]>=HEIGHT - self.z: #Bouncing
             self.velocity = Vector2((self.velocity[0], -self.velocity[1]))
         if self.rect.center[0] <=0:
@@ -185,7 +183,7 @@ def menu ():
            sys.exit()
            
 def main():
-    all_bullets = pygame.sprite.Group() 
+    all_bullets = pygame.sprite.Group()  #create a sprite group
     
     player2_group = pygame.sprite.Group()
     player2 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Isaac.png')).convert()) #starting position of player 2
@@ -235,35 +233,33 @@ def main():
         screen.blit(surf,(50,30))
     
     
-    def aim():
+    def aim(): #set the direction of the bullet
         end_x = pygame.mouse.get_pos()[0]
         end_y = pygame.mouse.get_pos()[1]
         end = Vector2((end_x, end_y))
         Bullet.start = Vector2((WIDTH - 100 - ENDZONE- ((BORDER+WIDTH)//240) - players.Player2.WIDTH//2, player2.y))
-        Bullet.velocity = (Bullet.start-end).normalize()*16   
+        Bullet.velocity = (Bullet.start-end).normalize()*(VELOCITY+2) #count one step of the bullet  
         
-    def collide():
-         for bullet in all_bullets:
-             if time_left <= 0:
-                 pygame.sprite.Sprite.kill(bullet)
-             elif bullet.rect.colliderect(player1.rect):
-                 targethit.play()
-                 pygame.sprite.Sprite.kill(bullet)
-                 if time_left>0:   
-                     global IsaacScore
-                     IsaacScore +=1
-             elif bullet.rect.colliderect(player2.rect):
-                 targethit.play()
-                 pygame.sprite.Sprite.kill(bullet)
-                 global ThorstenScore
-                 ThorstenScore +=1
+    def collide(): #check if bullet hit a player
+        for bullet in all_bullets:
+            if bullet.rect.colliderect(player1.rect): #in the first round player one is the runner
+                targethit.play()
+                pygame.sprite.Sprite.kill(bullet)
+                if time_left>0:   
+                    global IsaacScore
+                    IsaacScore +=1
+            if bullet.rect.colliderect(player2.rect):#in the second round player 2 is the runner
+                targethit.play()
+                pygame.sprite.Sprite.kill(bullet)
+                global ThorstenScore
+                ThorstenScore +=1
                  
-    round_time = 5 
-    break_time = 2
-    t0 = time.time()
-    last_shot = 0
+    round_time = 5 #set the time of each round
+    break_time = 2 #set the time between rounds
+    t0 = time.time() #start measure time from the moment of leaving the menu
+    last_shot = 0 #to set a fire rate
     SHOT_DELAY = 500
-    i=0  
+    i=0  #change rounds  
     def results(): #display victory images
         if ThorstenScore < IsaacScore:
                 print("Isaac wins!")
@@ -292,11 +288,11 @@ def main():
         if time_left <= 0:
             
             if i <1:
-                pygame.sprite.Sprite.kill(player2)
-                pygame.sprite.Sprite.kill(player1) 
+                pygame.sprite.Sprite.kill(player2)#kill player2
+                pygame.sprite.Sprite.kill(player1)#kill player1
                 
                 if time_left <= -break_time:
-        
+                    #create players in new locations
                     player1 = players.Player2(WIDTH - 41, HEIGHT//2,pygame.image.load(os.path.join(img_folder, 'Thorsten.png')).convert()) #starting position of player 2
                     player2_group.add(player1)
                     player2 = players.Player1(150,HEIGHT//2, pygame.image.load(os.path.join(img_folder, 'Isaacflip.png')).convert()) #starting position of player 1
@@ -313,17 +309,17 @@ def main():
         if time_left > 0 :
             if e.type == pygame.MOUSEBUTTONDOWN :
                 now = pygame.time.get_ticks()
-                if now - last_shot >= SHOT_DELAY:
+                if now - last_shot >= SHOT_DELAY: #fire rate
                     sfx_throw.play()
                     all_bullets.add(Bullet(Bullet.velocity, Bullet.start))
                     last_shot = now
-        collide()
-        all_bullets.update()
+        collide() #check if bullet hit a player
+        all_bullets.update() #update positions of all bullets
         player2_group.update()
         player1_group.update()
         boundary_group.update()
         #calculate destination and velocity
-        aim()    
+        aim() #set the direction of the bullet    
         # Draw / render
         clock.tick(FPS)
         
