@@ -240,7 +240,7 @@ def main():
         
     def VictoryText(text):
         pygame.font.init()
-        myFont = pygame.font.SysFont(pygame.font.get_default_font(),100)
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),70)
         surf =  myFont.render(text,False,pygame.Color("Black"))
         screen.blit(surf,(50,30))
         
@@ -253,6 +253,12 @@ def main():
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),50)
         surf =  myFont.render(text,False,pygame.Color("Black"))
         screen.blit(surf,(50,450))
+        
+    def GoBack(text): #press space to go back text
+        pygame.font.init()
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
+        surf =  myFont.render(text,False,pygame.Color("Black"))
+        screen.blit(surf,(WIDTH-350,HEIGHT-BORDER))
     
     
     def aim(): #set the direction of the bullet
@@ -290,7 +296,8 @@ def main():
                 IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
                 IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
                 screen.blit(IWin, [0, 0])
-                VictoryText("I had the highground, Thor(sten)!")
+                VictoryText("Isaac WINS: I had the highground, Thor(sten)!")
+                GoBack("Press SPACE to go back to the main menu")
                 thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
                 isaacscore("Isaac's Energy : {}".format(IsaacScore))
                 
@@ -299,11 +306,16 @@ def main():
                 TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
                 TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
                 screen.blit(TWin, [0, 0])
-                VictoryText("You never had a chance, Isaac!")
+                VictoryText("Thor WINS: You never had a chance, Isaac!")
+                GoBack("Press SPACE to go back to the main menu")
                 thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
                 isaacscore("Isaac's Energy : {}".format(IsaacScore))
         else: 
-                print("Draw!")
+                Draw = pygame.image.load(os.path.join(img_folder, 'Draw.png')).convert()
+                Draw = pygame.transform.scale(Draw, (WIDTH, HEIGHT))
+                screen.blit(Draw, [0, 0])
+                VictoryText("DRAW: We were equally professional this time")
+                GoBack("Press SPACE to go back to the main menu")
               
     gameExit = False
     while not gameExit:
@@ -330,7 +342,13 @@ def main():
                     i+=1
                     False
             else:
-                i +=1  
+                i +=1 
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_SPACE]:
+                    gameExit = True
+                    menu()
+                    main()
+                    
                 
         #if Thorstenlife < 1 or Isaaclife <1:
          #   break
