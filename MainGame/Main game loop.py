@@ -235,6 +235,16 @@ def main():
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),100)
         surf =  myFont.render(text,False,pygame.Color("Black"))
         screen.blit(surf,(50,30))
+        
+    def thorstenscore(text):
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),50)
+        surf =  myFont.render(text,False,pygame.Color("Black"))
+        screen.blit(surf,(50,350))
+    
+    def isaacscore(text):
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),50)
+        surf =  myFont.render(text,False,pygame.Color("Black"))
+        screen.blit(surf,(50,450))
     
     
     def aim(): #set the direction of the bullet
@@ -271,6 +281,8 @@ def main():
                 IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
                 screen.blit(IWin, [0, 0])
                 VictoryText("I had the highground, Thor(sten)!")
+                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
+                isaacscore("Isaac's Energy : {}".format(IsaacScore))
                 
         elif ThorstenScore > IsaacScore:
                 print("Thorsten wins!")
@@ -278,6 +290,8 @@ def main():
                 TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
                 screen.blit(TWin, [0, 0])
                 VictoryText("You never had a chance, Isaac!")
+                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
+                isaacscore("Isaac's Energy : {}".format(IsaacScore))
         else: 
                 print("Draw!")
               
