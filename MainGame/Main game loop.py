@@ -12,8 +12,8 @@ ENDZONE = 15
 global BORDER
 BORDER = 30
 VELOCITY = 15
-Thorstenlife = 30
-Isaaclife = 30
+IsaacScore = 0
+ThorstenScore = 0
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.mixer.init
@@ -26,10 +26,13 @@ img_folder = os.path.join(game_folder, 'TSArt')
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 Background1 = pygame.image.load("TSArt/airadventurelevel1.png")
+Background2 = pygame.image.load("TSArt/airadventurelevel2.png")
+Background3 = pygame.image.load("TSArt/airadventurelevel3.png")
+Background4 = pygame.image.load("TSArt/airadventurelevel4.png")
 #Background1 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel1.png')).convert()
-Background2 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel2.png')).convert()
-Background3 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
-Background4 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel4.png')).convert()
+#Background2 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel2.png')).convert()
+#Background3 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel3.png')).convert()
+#Background4 = pygame.image.load(os.path.join(img_folder, 'airadventurelevel4.png')).convert()
 
 r = random.randint(1,4)
 
@@ -162,11 +165,18 @@ def main ():
         surf = myFont.render(text, False, pygame.Color("Black"), pygame.Color("Yellow")) #font and background color
         screen.blit(surf,((WIDTH//2)-50,0)) #where to put the text on
     
-    def Lifeshow(text):
+    def Lifeshow1(text):
         pygame.font.init()
         myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
         surf =  myFont.render(text,False,pygame.Color("Black"), pygame.Color("Yellow"))
         screen.blit(surf,(0,0))
+        
+    def Lifeshow2(text):
+        pygame.font.init()
+        myFont = pygame.font.SysFont(pygame.font.get_default_font(),25)
+        surf =  myFont.render(text,False,pygame.Color("Black"), pygame.Color("Yellow"))
+        screen.blit(surf,(1057,0))
+    
     
     def aim():
         end_x = pygame.mouse.get_pos()[0]
@@ -181,13 +191,13 @@ def main ():
                     targethit.play()
                     pygame.sprite.Sprite.kill(bullet)
                     if time_left>0:   
-                        global Thorstenlife
-                        Thorstenlife -=1
+                        global IsaacScore
+                        IsaacScore +=1
                 if bullet.rect.colliderect(player2.rect):
                     targethit.play()
                     pygame.sprite.Sprite.kill(bullet)
-                    global Isaaclife
-                    Isaaclife -=1
+                    global ThorstenScore
+                    ThorstenScore +=1
     round_time = 30
     break_time = 6
     counter = round_time-(pygame.time.get_ticks()//1000)
@@ -217,8 +227,8 @@ def main ():
             else:
                 break 
                 
-        if Thorstenlife < 1 or Isaaclife <1:
-            break
+        #if Thorstenlife < 1 or Isaaclife <1:
+         #   break
         if time_left > 0 :
             if e.type == pygame.MOUSEBUTTONDOWN :
                 now = pygame.time.get_ticks()
@@ -246,8 +256,8 @@ def main ():
             
         #Timeshow("Time: {}".format(seconds)) #show timer
         Timeshow("Time: {}".format(time_left))
-        Lifeshow("Thorsten: {}  Isaac: {}".format(Thorstenlife, Isaaclife))
-         
+        Lifeshow1("Thorsten's Power: {}".format(ThorstenScore))
+        Lifeshow2("Isaac's Energy : {}".format(IsaacScore))
         pygame.display.flip()
 if __name__ == '__main__':
     main()
