@@ -188,8 +188,12 @@ def menu ():
         if event.type == pygame.QUIT:
            pygame.quit()
            sys.exit()
-           
+
+
+       
 def main():
+    pygame.mixer.music.load("Running in the 90s.mp3")
+    pygame.mixer.music.play(-1)
     all_bullets = pygame.sprite.Group()  #create a sprite group
     
     player2_group = pygame.sprite.Group()
@@ -292,6 +296,7 @@ def main():
     i=0  #change rounds  
     def results(): #display victory images
         if ThorstenScore < IsaacScore:
+                pygame.mixer.music.stop()
                 print("Isaac wins!")
                 IWin = pygame.image.load(os.path.join(img_folder, 'IsaacWin.png')).convert()
                 IWin = pygame.transform.scale(IWin, (WIDTH, HEIGHT))
@@ -302,6 +307,7 @@ def main():
                 isaacscore("Isaac's Energy : {}".format(IsaacScore))
                 
         elif ThorstenScore > IsaacScore:
+                pygame.mixer.music.stop()
                 print("Thorsten wins!")
                 TWin = pygame.image.load(os.path.join(img_folder, 'ThorstenWin.png')).convert()
                 TWin = pygame.transform.scale(TWin, (WIDTH, HEIGHT))
@@ -311,11 +317,14 @@ def main():
                 thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
                 isaacscore("Isaac's Energy : {}".format(IsaacScore))
         else: 
+                pygame.mixer.music.stop()
                 Draw = pygame.image.load(os.path.join(img_folder, 'Draw.png')).convert()
                 Draw = pygame.transform.scale(Draw, (WIDTH, HEIGHT))
                 screen.blit(Draw, [0, 0])
                 VictoryText("DRAW: We were equally professional this time")
                 GoBack("Press SPACE to go back to the main menu")
+                thorstenscore("Thorsten's Power : {}".format(ThorstenScore))
+                isaacscore("Isaac's Energy : {}".format(IsaacScore))
               
     gameExit = False
     while not gameExit:
